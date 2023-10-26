@@ -8,5 +8,10 @@
   },
   "keywords": [],
   "author": "cialloo",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "@grpc/grpc-js": "^1.9.7",
+    "mongodb": "6.2",
+    "qiniu": "^7.10.0"
+  }
 }
