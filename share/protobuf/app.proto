@@ -3,7 +3,7 @@ syntax = "proto3";
 package app;
 
 service UserOperation {
-    rpc SignUp (SignUpRequest) returns (SignUpReply) {}
+    rpc SignUp (SignUpRequest) returns (SignUpResponse) {}
 }
 
 message SignUpRequest {
@@ -12,6 +12,6 @@ message SignUpRequest {
     string email = 3;
 }
 
-message SignUpReply {
+message SignUpResponse {
     bool ok = 1;
 }
