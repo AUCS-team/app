@@ -2,8 +2,20 @@ syntax = "proto3";
 
 package app;
 
+service Meta {
+    rpc Echo (EchoRequest) returns (EchoResponse) {} 
+}
+
 service UserOperation {
     rpc SignUp (SignUpRequest) returns (SignUpResponse) {}
+}
+
+message EchoRequest {
+    string content = 1;
+}
+
+message EchoResponse {
+    string content = 2;
 }
 
 message SignUpRequest {
