@@ -2,16 +2,16 @@ syntax = "proto3";
 
 package app;
 
-service api {
-    rpc signUp (signUpRequest) returns (signUpReply) {}
+service UserOperation {
+    rpc SignUp (SignUpRequest) returns (SignUpReply) {}
 }
 
-message signUpRequest {
+message SignUpRequest {
     string username = 1;
     string password = 2;
     string email = 3;
 }
 
-message signUpReply {
+message SignUpReply {
     bool ok = 1;
 }
