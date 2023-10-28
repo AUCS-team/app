@@ -16,7 +16,6 @@ function App() {
           <Outlet></Outlet>
         </Layout>
       </Space>
-      
     </>
   )
 }

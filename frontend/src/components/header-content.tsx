@@ -14,26 +14,31 @@ const items: MenuProps["items"] = [
         key: '1',
     },
     {
-        label: '体育频道',
+        label: (
+            <Link to={`/pe`}>体育频道</Link>
+        ),
         key: '2',
     },
     {
-        label: '生活频道',
+        label: (<Link to={`/live`}>生活频道</Link>
+        ),
         key: '3',
     },
     {
-        label: '娱乐频道',
+        label:(<Link to={`/fun`}>娱乐频道</Link>
+        ),
         key: '4',
     },
     {
-        label: '游戏频道',
+        label: (<Link to={`/game`}>游戏频道</Link>
+        ),
         key: '5',
     },
 ]
 const HeaderContent = () => {
     return (
         <>
-            <div>
+            <div className="w-36">
                 <Link to={`/`}>
                     <img src={qiniuyunlogo} className="logo react" alt="React logo" />
                 </Link>

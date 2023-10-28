@@ -21,14 +21,14 @@ export const router = createBrowserRouter([
                 path:"/video/:id",
                 element:<VideoPage></VideoPage>,
                 loader:async ({params})=>{
-                    return await fetch(`api/${params.id}.json`)
+                    return await fetch(`/api/${params.id}.json`)
                 }
             },
             {
                 path:"/:type",
-                element:<VideoPage></VideoPage>,
+                element:<Index></Index>,
                 loader:async ({params})=>{
-                    const json = await fetch(`api/${params.type}.json`)
+                    const json = await fetch(`/api/${params.type}.json`)
                     return await json.json()
                 }
             },
