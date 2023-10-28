@@ -104,7 +104,21 @@ function signIn(call, callback) {
             }
         });
     } else {
-
+        mongoUserCollection.findOne({
+            "username": account,
+            "password": password,
+        }).then((result) => {
+            if (result === null) {
+                callback(null, {
+                    "ok": false,
+                });
+            } else if (result != null) {
+                callback(null, {
+                    "ok": true,
+                    "userid": result._id,
+                });
+            }
+        });
     }
 }
 
