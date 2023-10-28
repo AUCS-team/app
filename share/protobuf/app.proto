@@ -48,5 +48,10 @@ message GetUserInfoByIdRequest {
 
 message GetUserInfoByIdResponse {
     bool ok = 1;
-    object info = 2;
+    string userid = 2;
+    string username = 3;
+    string email = 4;
+    string create_email = 5;
+    string create_ip = 6;
+    int32 create_time = 7;
 }

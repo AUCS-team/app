@@ -1,4 +1,4 @@
-const { MongoClient } = require('mongodb');
+const { MongoClient, ObjectId } = require('mongodb');
 const config = require('./config');
 const grpc = require('@grpc/grpc-js');
 const grpcProtoLoader = require('@grpc/proto-loader');
@@ -33,6 +33,7 @@ function initGrpcServer() {
     server.addService(appProto.UserOperation.service, {
         signUp: signUp,
         signIn: signIn,
+        getUserInfoById: getUserInfoById,
     });
     server.bindAsync(grpcUrl, grpc.ServerCredentials.createInsecure(), () => {
         server.start();
@@ -120,6 +121,31 @@ function signIn(call, callback) {
             }
         });
     }
+}
+
+function getUserInfoById(call, callback) {
+    let userid = call.request.userid;
+
+    mongoUserCollection.findOne({
+        "_id": new ObjectId(userid),
+    }).then((result) => {
+        if (result === null) {
+            callback(null, {
+                "ok": false,
+            });
+        } else if (result != null) {
+            console.log(result);
+            callback(null, {
+                "ok": true,
+                "userid": userid,
+                "username": result.username,
+                "email": result.email,
+                "create_email": result.create_email,
+                "create_ip": result.create_ip,
+                "create_time": result.create_time,
+            });
+        }
+    });
 }
 
 async function main() {
