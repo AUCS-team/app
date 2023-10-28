@@ -26,4 +26,5 @@ message SignUpRequest {
 
 message SignUpResponse {
     bool ok = 1;
+    string userid = 2;
 }

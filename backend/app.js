@@ -30,6 +30,9 @@ function initGrpcServer() {
     server.addService(appProto.Meta.service, {
         echo: echo,
     });
+    server.addService(appProto.UserOperation.service, {
+        signUp: signUp,
+    });
     server.bindAsync(grpcUrl, grpc.ServerCredentials.createInsecure(), () => {
         server.start();
     });
@@ -37,6 +40,33 @@ function initGrpcServer() {
 
 function echo(call, callback) {
     callback(null, { "content": "This is Meta service, here is your message:" + call.request.content });
+}
+
+function signUp(call, callback) {
+    let username = call.request.username;
+    let password = call.request.password;
+    let email = call.request.email;
+    let ip = call.getPeer().split(':')[0];
+    let time = new Date().getTime();
+
+    if (username.includes('@')) {
+        callback(null, {
+            "ok": false,
+        });
+    } else {
+        mongoUserCollection.insertOne({
+            "username": username,
+            "password": password,
+            "create_email": email,
+            "create_ip": ip,
+            "create_time": time
+        }).then((insertResult) => {
+            callback(null, {
+                "ok": true,
+                "userid": insertResult.insertedId,
+            });
+        });
+    }
 }
 
 async function main() {
