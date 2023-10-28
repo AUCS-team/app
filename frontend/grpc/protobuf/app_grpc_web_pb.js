@@ -248,5 +248,188 @@ proto.app.UserOperationPromiseClient.prototype.signUp =
 };
 
 
+/**
+ * @const
+ * @type {!grpc.web.MethodDescriptor<
+ *   !proto.app.SignInRequest,
+ *   !proto.app.SignInResponse>}
+ */
+const methodDescriptor_UserOperation_SignIn = new grpc.web.MethodDescriptor(
+  '/app.UserOperation/SignIn',
+  grpc.web.MethodType.UNARY,
+  proto.app.SignInRequest,
+  proto.app.SignInResponse,
+  /**
+   * @param {!proto.app.SignInRequest} request
+   * @return {!Uint8Array}
+   */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.app.SignInResponse.deserializeBinary
+);
+
+
+/**
+ * @param {!proto.app.SignInRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @param {function(?grpc.web.RpcError, ?proto.app.SignInResponse)}
+ *     callback The callback function(error, response)
+ * @return {!grpc.web.ClientReadableStream<!proto.app.SignInResponse>|undefined}
+ *     The XHR Node Readable Stream
+ */
+proto.app.UserOperationClient.prototype.signIn =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/app.UserOperation/SignIn',
+      request,
+      metadata || {},
+      methodDescriptor_UserOperation_SignIn,
+      callback);
+};
+
+
+/**
+ * @param {!proto.app.SignInRequest} request The
+ *     request proto
+ * @param {?Object<string, string>=} metadata User defined
+ *     call metadata
+ * @return {!Promise<!proto.app.SignInResponse>}
+ *     Promise that resolves to the response
+ */
+proto.app.UserOperationPromiseClient.prototype.signIn =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/app.UserOperation/SignIn',
+      request,
+      metadata || {},
+      methodDescriptor_UserOperation_SignIn);
+};
+
+
+/**
+ * @const
+ * @type {!grpc.web.MethodDescriptor<
+ *   !proto.app.GetUserInfoByIdRequest,
+ *   !proto.app.GetUserInfoResponse>}
+ */
+const methodDescriptor_UserOperation_GetUserInfoById = new grpc.web.MethodDescriptor(
+  '/app.UserOperation/GetUserInfoById',
+  grpc.web.MethodType.UNARY,
+  proto.app.GetUserInfoByIdRequest,
+  proto.app.GetUserInfoResponse,
+  /**
+   * @param {!proto.app.GetUserInfoByIdRequest} request
+   * @return {!Uint8Array}
+   */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.app.GetUserInfoResponse.deserializeBinary
+);
+
+
+/**
+ * @param {!proto.app.GetUserInfoByIdRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @param {function(?grpc.web.RpcError, ?proto.app.GetUserInfoResponse)}
+ *     callback The callback function(error, response)
+ * @return {!grpc.web.ClientReadableStream<!proto.app.GetUserInfoResponse>|undefined}
+ *     The XHR Node Readable Stream
+ */
+proto.app.UserOperationClient.prototype.getUserInfoById =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/app.UserOperation/GetUserInfoById',
+      request,
+      metadata || {},
+      methodDescriptor_UserOperation_GetUserInfoById,
+      callback);
+};
+
+
+/**
+ * @param {!proto.app.GetUserInfoByIdRequest} request The
+ *     request proto
+ * @param {?Object<string, string>=} metadata User defined
+ *     call metadata
+ * @return {!Promise<!proto.app.GetUserInfoResponse>}
+ *     Promise that resolves to the response
+ */
+proto.app.UserOperationPromiseClient.prototype.getUserInfoById =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/app.UserOperation/GetUserInfoById',
+      request,
+      metadata || {},
+      methodDescriptor_UserOperation_GetUserInfoById);
+};
+
+
+/**
+ * @const
+ * @type {!grpc.web.MethodDescriptor<
+ *   !proto.app.GetUserInfoByUsernameRequest,
+ *   !proto.app.GetUserInfoResponse>}
+ */
+const methodDescriptor_UserOperation_GetUserInfoByUsername = new grpc.web.MethodDescriptor(
+  '/app.UserOperation/GetUserInfoByUsername',
+  grpc.web.MethodType.UNARY,
+  proto.app.GetUserInfoByUsernameRequest,
+  proto.app.GetUserInfoResponse,
+  /**
+   * @param {!proto.app.GetUserInfoByUsernameRequest} request
+   * @return {!Uint8Array}
+   */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.app.GetUserInfoResponse.deserializeBinary
+);
+
+
+/**
+ * @param {!proto.app.GetUserInfoByUsernameRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @param {function(?grpc.web.RpcError, ?proto.app.GetUserInfoResponse)}
+ *     callback The callback function(error, response)
+ * @return {!grpc.web.ClientReadableStream<!proto.app.GetUserInfoResponse>|undefined}
+ *     The XHR Node Readable Stream
+ */
+proto.app.UserOperationClient.prototype.getUserInfoByUsername =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/app.UserOperation/GetUserInfoByUsername',
+      request,
+      metadata || {},
+      methodDescriptor_UserOperation_GetUserInfoByUsername,
+      callback);
+};
+
+
+/**
+ * @param {!proto.app.GetUserInfoByUsernameRequest} request The
+ *     request proto
+ * @param {?Object<string, string>=} metadata User defined
+ *     call metadata
+ * @return {!Promise<!proto.app.GetUserInfoResponse>}
+ *     Promise that resolves to the response
+ */
+proto.app.UserOperationPromiseClient.prototype.getUserInfoByUsername =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/app.UserOperation/GetUserInfoByUsername',
+      request,
+      metadata || {},
+      methodDescriptor_UserOperation_GetUserInfoByUsername);
+};
+
+
 module.exports = proto.app;
 

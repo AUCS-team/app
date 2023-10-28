@@ -1,4 +1,4 @@
-const { MongoClient } = require('mongodb');
+const { MongoClient, ObjectId } = require('mongodb');
 const config = require('./config');
 const grpc = require('@grpc/grpc-js');
 const grpcProtoLoader = require('@grpc/proto-loader');
@@ -30,6 +30,12 @@ function initGrpcServer() {
     server.addService(appProto.Meta.service, {
         echo: echo,
     });
+    server.addService(appProto.UserOperation.service, {
+        signUp: signUp,
+        signIn: signIn,
+        getUserInfoById: getUserInfoById,
+        getUserInfoByUsername: getUserInfoByUsername,
+    });
     server.bindAsync(grpcUrl, grpc.ServerCredentials.createInsecure(), () => {
         server.start();
     });
@@ -37,6 +43,133 @@ function initGrpcServer() {
 
 function echo(call, callback) {
     callback(null, { "content": "This is Meta service, here is your message:" + call.request.content });
+}
+
+function signUp(call, callback) {
+    let username = call.request.username;
+    let password = call.request.password;
+    let email = call.request.email;
+    let ip = call.getPeer().split(':')[0];
+    let time = new Date().getTime();
+
+    if (username.includes('@')) {
+        callback(null, {
+            "ok": false,
+        });
+    } else {
+        mongoUserCollection.findOne({
+            "username": username,
+        }).then((result) => {
+            if (result != null) {
+                callback(null, {
+                    "ok": false,
+                });
+            } else {
+                mongoUserCollection.insertOne({
+                    "username": username,
+                    "password": password,
+                    "email": email,
+                    "create_email": email,
+                    "create_ip": ip,
+                    "create_time": time
+                }).then((insertResult) => {
+                    callback(null, {
+                        "ok": true,
+                        "userid": insertResult.insertedId,
+                    });
+                });
+            }
+        });
+    }
+}
+
+function signIn(call, callback) {
+    let account = call.request.account;
+    let password = call.request.password;
+    let ip = call.getPeer().split(':')[0];
+    let time = new Date().getTime();
+
+    if (account.includes('@')) {
+        mongoUserCollection.findOne({
+            "email": account,
+            "password": password,
+        }).then((result) => {
+            if (result === null) {
+                callback(null, {
+                    "ok": false,
+                });
+            } else if (result != null) {
+                callback(null, {
+                    "ok": true,
+                    "userid": result._id,
+                })
+            }
+        });
+    } else {
+        mongoUserCollection.findOne({
+            "username": account,
+            "password": password,
+        }).then((result) => {
+            if (result === null) {
+                callback(null, {
+                    "ok": false,
+                });
+            } else if (result != null) {
+                callback(null, {
+                    "ok": true,
+                    "userid": result._id,
+                });
+            }
+        });
+    }
+}
+
+function getUserInfoById(call, callback) {
+    let userid = call.request.userid;
+
+    mongoUserCollection.findOne({
+        "_id": new ObjectId(userid),
+    }).then((result) => {
+        if (result === null) {
+            callback(null, {
+                "ok": false,
+            });
+        } else if (result != null) {
+            callback(null, {
+                "ok": true,
+                "userid": userid,
+                "username": result.username,
+                "email": result.email,
+                "create_email": result.create_email,
+                "create_ip": result.create_ip,
+                "create_time": result.create_time,
+            });
+        }
+    });
+}
+
+function getUserInfoByUsername(call, callback) {
+    let username = call.request.username;
+
+    mongoUserCollection.findOne({
+        "username": username,
+    }).then((result) => {
+        if (result === null) {
+            callback(null, {
+                "ok": false,
+            });
+        } else if (result != null) {
+            callback(null, {
+                "ok": true,
+                "userid": result._id,
+                "username": result.username,
+                "email": result.email,
+                "create_email": result.create_email,
+                "create_ip": result.create_ip,
+                "create_time": result.create_time,
+            });
+        }
+    });
 }
 
 async function main() {
