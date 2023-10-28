@@ -55,18 +55,28 @@ function signUp(call, callback) {
             "ok": false,
         });
     } else {
-        mongoUserCollection.insertOne({
+        mongoUserCollection.findOne({
             "username": username,
-            "password": password,
-            "email": email,
-            "create_email": email,
-            "create_ip": ip,
-            "create_time": time
-        }).then((insertResult) => {
-            callback(null, {
-                "ok": true,
-                "userid": insertResult.insertedId,
-            });
+        }).then((result) => {
+            if (result != null) {
+                callback(null, {
+                    "ok": false,
+                });
+            } else {
+                mongoUserCollection.insertOne({
+                    "username": username,
+                    "password": password,
+                    "email": email,
+                    "create_email": email,
+                    "create_ip": ip,
+                    "create_time": time
+                }).then((insertResult) => {
+                    callback(null, {
+                        "ok": true,
+                        "userid": insertResult.insertedId,
+                    });
+                });
+            }
         });
     }
 }
