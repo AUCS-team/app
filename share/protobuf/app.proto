@@ -10,7 +10,8 @@ service UserOperation {
     rpc SignUp (SignUpRequest) returns (SignUpResponse) {}
     rpc SignIn (SignInRequest) returns (SignInResponse) {}
 
-    rpc  GetUserInfoById (GetUserInfoByIdRequest) returns (GetUserInfoByIdResponse) {}
+    rpc GetUserInfoById (GetUserInfoByIdRequest) returns (GetUserInfoResponse) {}
+    rpc GetUserInfoByUsername (GetUserInfoByUsernameRequest) returns (GetUserInfoResponse) {}
 }
 
 message EchoRequest {
@@ -46,7 +47,11 @@ message GetUserInfoByIdRequest {
     string userid = 1;
 }
 
-message GetUserInfoByIdResponse {
+message GetUserInfoByUsernameRequest {
+    string username = 1;
+}
+
+message GetUserInfoResponse {
     bool ok = 1;
     string userid = 2;
     string username = 3;

@@ -34,6 +34,7 @@ function initGrpcServer() {
         signUp: signUp,
         signIn: signIn,
         getUserInfoById: getUserInfoById,
+        getUserInfoByUsername: getUserInfoByUsername,
     });
     server.bindAsync(grpcUrl, grpc.ServerCredentials.createInsecure(), () => {
         server.start();
@@ -134,10 +135,33 @@ function getUserInfoById(call, callback) {
                 "ok": false,
             });
         } else if (result != null) {
-            console.log(result);
             callback(null, {
                 "ok": true,
                 "userid": userid,
+                "username": result.username,
+                "email": result.email,
+                "create_email": result.create_email,
+                "create_ip": result.create_ip,
+                "create_time": result.create_time,
+            });
+        }
+    });
+}
+
+function getUserInfoByUsername(call, callback) {
+    let username = call.request.username;
+
+    mongoUserCollection.findOne({
+        "username": username,
+    }).then((result) => {
+        if (result === null) {
+            callback(null, {
+                "ok": false,
+            });
+        } else if (result != null) {
+            callback(null, {
+                "ok": true,
+                "userid": result._id,
                 "username": result.username,
                 "email": result.email,
                 "create_email": result.create_email,
