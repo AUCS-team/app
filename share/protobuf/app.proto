@@ -8,6 +8,7 @@ service Meta {
 
 service UserOperation {
     rpc SignUp (SignUpRequest) returns (SignUpResponse) {}
+    rpc SignIn (SignInRequest) returns (SignInResponse) {}
 }
 
 message EchoRequest {
@@ -25,6 +26,16 @@ message SignUpRequest {
 }
 
 message SignUpResponse {
+    bool ok = 1;
+    string userid = 2;
+}
+
+message SignInRequest {
+    string account = 1;
+    string password = 2;
+}
+
+message SignInResponse {
     bool ok = 1;
     string userid = 2;
 }

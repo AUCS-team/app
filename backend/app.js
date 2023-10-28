@@ -32,6 +32,7 @@ function initGrpcServer() {
     });
     server.addService(appProto.UserOperation.service, {
         signUp: signUp,
+        signIn: signIn,
     });
     server.bindAsync(grpcUrl, grpc.ServerCredentials.createInsecure(), () => {
         server.start();
@@ -57,6 +58,7 @@ function signUp(call, callback) {
         mongoUserCollection.insertOne({
             "username": username,
             "password": password,
+            "email": email,
             "create_email": email,
             "create_ip": ip,
             "create_time": time
@@ -66,6 +68,33 @@ function signUp(call, callback) {
                 "userid": insertResult.insertedId,
             });
         });
+    }
+}
+
+function signIn(call, callback) {
+    let account = call.request.account;
+    let password = call.request.password;
+    let ip = call.getPeer().split(':')[0];
+    let time = new Date().getTime();
+
+    if (account.includes('@')) {
+        mongoUserCollection.findOne({
+            "email": account,
+            "password": password,
+        }).then((result) => {
+            if (result === null) {
+                callback(null, {
+                    "ok": false,
+                });
+            } else if (result != null) {
+                callback(null, {
+                    "ok": true,
+                    "userid": result._id,
+                })
+            }
+        });
+    } else {
+
     }
 }
 
