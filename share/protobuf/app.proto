@@ -9,6 +9,8 @@ service Meta {
 service UserOperation {
     rpc SignUp (SignUpRequest) returns (SignUpResponse) {}
     rpc SignIn (SignInRequest) returns (SignInResponse) {}
+
+    rpc  GetUserInfoById (GetUserInfoByIdRequest) returns (GetUserInfoByIdResponse) {}
 }
 
 message EchoRequest {
@@ -38,4 +40,13 @@ message SignInRequest {
 message SignInResponse {
     bool ok = 1;
     string userid = 2;
+}
+
+message GetUserInfoByIdRequest {
+    string userid = 1;
+}
+
+message GetUserInfoByIdResponse {
+    bool ok = 1;
+    object info = 2;
 }
