@@ -79,7 +79,6 @@ function signUp(call, callback) {
                 }).then((insertResult) => {
                     let userid = insertResult.insertedId
                     let token = jwt.sign({
-                        "username": username,
                         "userid": userid
                     }, jwtSecret, {
                         expiresIn: jwtExpireTime,
@@ -129,7 +128,6 @@ function signIn(call, callback) {
             } else if (result != null) {
                 let userid = result._id
                 let token = jwt.sign({
-                    "username": username,
                     "userid": userid
                 }, jwtSecret, {
                     expiresIn: jwtExpireTime,
