@@ -13,6 +13,7 @@ const videoCollectionName = 'video';
 const grpcUrl = config.grpc.url;
 
 const jwtSecret = config.jwt.secret;
+const jwtExpireTime = config.jwt.expire;
 
 let mongoConnection = null;
 let mongoDatabase = null;
@@ -76,9 +77,17 @@ function signUp(call, callback) {
                     "create_ip": ip,
                     "create_time": time
                 }).then((insertResult) => {
+                    let userid = insertResult.insertedId
+                    let token = jwt.sign({
+                        "username": username,
+                        "userid": userid
+                    }, jwtSecret, {
+                        expiresIn: jwtExpireTime,
+                    });
                     callback(null, {
                         "ok": true,
-                        "userid": insertResult.insertedId,
+                        "userid": userid,
+                        "token": token,
                     });
                 });
             }
@@ -118,9 +127,17 @@ function signIn(call, callback) {
                     "ok": false,
                 });
             } else if (result != null) {
+                let userid = result._id
+                let token = jwt.sign({
+                    "username": username,
+                    "userid": userid
+                }, jwtSecret, {
+                    expiresIn: jwtExpireTime,
+                });
                 callback(null, {
                     "ok": true,
-                    "userid": result._id,
+                    "userid": userid,
+                    "token": token,
                 });
             }
         });

@@ -10,6 +10,7 @@
         "url": "0.0.0.0:8080"
     },
     "jwt": {
-        "secret": "2wkP6A72KiVrqitRUrxexB03qQGOLyui"
+        "secret": "2wkP6A72KiVrqitRUrxexB03qQGOLyui",
+        "expire": 2592000
     }
 }
