@@ -2,6 +2,7 @@ const { MongoClient, ObjectId } = require('mongodb');
 const config = require('./config');
 const grpc = require('@grpc/grpc-js');
 const grpcProtoLoader = require('@grpc/proto-loader');
+const jwt = require('jsonwebtoken');
 
 const mongoUrl = 'mongodb://' + config.database.host + ':' + config.database.port;
 const mongoClient = new MongoClient(mongoUrl);
@@ -9,7 +10,9 @@ const mongoDatabaseName = config.database.name;
 const userCollectionName = 'user';
 const videoCollectionName = 'video';
 
-const grpcUrl = '0.0.0.0:8080';
+const grpcUrl = config.grpc.url;
+
+const jwtSecret = config.jwt.secret;
 
 let mongoConnection = null;
 let mongoDatabase = null;
