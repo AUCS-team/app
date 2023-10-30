@@ -25,6 +25,6 @@
     },
     "express": {
         "port": 56789,
-        "callbackPath": "/storage/callback"
+        "callbackPath": "/aucs_moe_video/storage/callback"
     }
 }
