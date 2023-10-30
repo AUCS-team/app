@@ -81,6 +81,7 @@ function initStorageCallbackServer() {
 
 function echo(call, callback) {
     callback(null, { "content": "This is Meta service, here is your message:" + call.request.content });
+    return;
 }
 
 function signUp(call, callback) {
@@ -94,6 +95,7 @@ function signUp(call, callback) {
         callback(null, {
             "ok": false,
         });
+        return;
     } else {
         mongoUserCollection.findOne({
             "username": username,
@@ -102,6 +104,7 @@ function signUp(call, callback) {
                 callback(null, {
                     "ok": false,
                 });
+                return;
             } else {
                 mongoUserCollection.insertOne({
                     "username": username,
@@ -122,6 +125,7 @@ function signUp(call, callback) {
                         "userid": userid,
                         "token": token,
                     });
+                    return;
                 });
             }
         });
@@ -143,11 +147,13 @@ function signIn(call, callback) {
                 callback(null, {
                     "ok": false,
                 });
+                return;
             } else if (result != null) {
                 callback(null, {
                     "ok": true,
                     "userid": result._id,
-                })
+                });
+                return;
             }
         });
     } else {
@@ -159,6 +165,7 @@ function signIn(call, callback) {
                 callback(null, {
                     "ok": false,
                 });
+                return;
             } else if (result != null) {
                 let userid = result._id
                 let token = jwt.sign({
@@ -171,6 +178,7 @@ function signIn(call, callback) {
                     "userid": userid,
                     "token": token,
                 });
+                return;
             }
         });
     }
@@ -186,6 +194,7 @@ function getUserInfoById(call, callback) {
             callback(null, {
                 "ok": false,
             });
+            return;
         } else if (result != null) {
             callback(null, {
                 "ok": true,
@@ -196,6 +205,7 @@ function getUserInfoById(call, callback) {
                 "create_ip": result.create_ip,
                 "create_time": result.create_time,
             });
+            return;
         }
     });
 }
@@ -210,6 +220,7 @@ function getUserInfoByUsername(call, callback) {
             callback(null, {
                 "ok": false,
             });
+            return;
         } else if (result != null) {
             callback(null, {
                 "ok": true,
@@ -220,6 +231,7 @@ function getUserInfoByUsername(call, callback) {
                 "create_ip": result.create_ip,
                 "create_time": result.create_time,
             });
+            return;
         }
     });
 }
@@ -232,10 +244,12 @@ function getUploadToken(call, callback) {
         decoded = jwt.verify(userToken, jwtSecret);
     } catch (err) {
         callback(null, { "token": "" });
+        return;
     }
 
     if (decoded == null) {
         callback(null, { "token": "" });
+        return;
     }
 
     let mac = new qiniu.auth.digest.Mac(qiniuStorageAccessKey, qiniuStorageSecretKey);
@@ -248,6 +262,7 @@ function getUploadToken(call, callback) {
     let uploadToken = putPolicy.uploadToken(mac);
 
     callback(null, { "token": uploadToken });
+    return;
 }
 
 async function main() {
