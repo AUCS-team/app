@@ -5,6 +5,7 @@ const grpcProtoLoader = require('@grpc/proto-loader');
 const jwt = require('jsonwebtoken');
 const express = require('express');
 const bodyParser = require('body-parser');
+const qiniu = require('qiniu');
 
 const mongoUrl = 'mongodb://' + config.database.host + ':' + config.database.port;
 const mongoClient = new MongoClient(mongoUrl);
@@ -16,6 +17,10 @@ const grpcUrl = config.grpc.url;
 
 const jwtSecret = config.jwt.secret;
 const jwtExpireTime = config.jwt.expire;
+
+const qiniuStorageAccessKey = config.qiniu.storage.accessKey;
+const qiniuStorageSecretKey = config.qiniu.storage.secretKey;
+const qiniuStorageBucketName = config.qiniu.storage.bucketName;
 
 let mongoConnection = null;
 let mongoDatabase = null;
@@ -45,8 +50,13 @@ function initGrpcServer() {
         getUserInfoByUsername,
     };
 
+    let storageImplementation = {
+        getUploadToken,
+    };
+
     server.addService(appProto.Meta.service, metaImplementation);
     server.addService(appProto.UserOperation.service, userOperationImplementation);
+    server.addService(appProto.Storage.service, storageImplementation);
     server.bindAsync(grpcUrl, grpc.ServerCredentials.createInsecure(), () => {
         server.start();
     });
@@ -57,15 +67,15 @@ function initStorageCallbackServer() {
     let port = 3000;
 
     app.use(bodyParser.json());
-    
+
     app.post('/storage/callback', (req, res) => {
-      let requestData = req.body;
-      console.log('Received data:', requestData);
-      res.status(200).send({"hello": "world"});
+        let requestData = req.body;
+        console.log('Received data:', requestData);
+        res.status(200).send({ "hello": "world" });
     });
 
     app.listen(port, () => {
-      console.log(`Server is running on port ${port}`);
+        console.log(`Server is running on port ${port}`);
     });
 }
 
@@ -212,6 +222,28 @@ function getUserInfoByUsername(call, callback) {
             });
         }
     });
+}
+
+function getUploadToken(call, callback) {
+    let userToken = call.request.token;
+    let decoded = null;
+
+    try {
+        decoded = jwt.verify(userToken, jwtSecret);
+    } catch (err) {
+        callback(null, { "token": "" });
+    }
+
+    let mac = new qiniu.auth.digest.Mac(qiniuStorageAccessKey, qiniuStorageSecretKey);
+
+    let options = {
+        scope: qiniuStorageBucketName,
+    };
+
+    let putPolicy = new qiniu.rs.PutPolicy(options);
+    let uploadToken = putPolicy.uploadToken(mac);
+
+    callback(null, { "token": uploadToken });
 }
 
 async function main() {
