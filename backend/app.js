@@ -7,7 +7,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const qiniu = require('qiniu');
 
-const mongoUrl = 'mongodb://' + config.database.host + ':' + config.database.port;
+const mongoUser = config.database.user;
+const mongoPassword = config.database.password;
+const mongoUrl = 'mongodb://' + mongoUser + ':' + mongoPassword + '@' + config.database.host + ':' + config.database.port;
 const mongoClient = new MongoClient(mongoUrl);
 const mongoDatabaseName = config.database.name;
 const userCollectionName = 'user';
@@ -25,6 +27,9 @@ const qiniuStorageCallbackUrl = config.qiniu.storage.callbackUrl;
 const qiniuStorageCallbackBody = config.qiniu.storage.callbackBody;
 const qiniuStorageCallbackBodyType = config.qiniu.storage.callbackBodyType;
 
+const expressPort = config.express.port;
+const expressCallbackPath = config.express.callbackPath;
+
 let mongoConnection = null;
 let mongoDatabase = null;
 let mongoUserCollection = null;
@@ -39,7 +44,7 @@ async function initMongoDatabaseConnection() {
 
 function initGrpcServer() {
     let server = new grpc.Server();
-    let packageDefinition = grpcProtoLoader.loadSync('../share/protobuf/app.proto');
+    let packageDefinition = grpcProtoLoader.loadSync('protobuf/app.proto');
     let appProto = grpc.loadPackageDefinition(packageDefinition).app;
 
     let metaImplementation = {
@@ -67,11 +72,11 @@ function initGrpcServer() {
 
 function initStorageCallbackServer() {
     let app = express();
-    let port = 3000;
+    let port = expressPort;
 
     app.use(bodyParser.json());
 
-    app.post('/storage/callback', (req, res) => {
+    app.post(expressCallbackPath, (req, res) => {
         let requestData = req.body;
         console.log('Received data:', requestData);
         res.status(200).send({ "hello": "world" });
