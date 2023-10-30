@@ -7,7 +7,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const qiniu = require('qiniu');
 
-const mongoUrl = 'mongodb://' + config.database.host + ':' + config.database.port;
+const mongoUser = config.database.user;
+const mongoPassword = config.database.password;
+const mongoUrl = 'mongodb://' + mongoUser + ':' + mongoPassword + '@' + config.database.host + ':' + config.database.port;
 const mongoClient = new MongoClient(mongoUrl);
 const mongoDatabaseName = config.database.name;
 const userCollectionName = 'user';
