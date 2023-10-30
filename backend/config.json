@@ -2,12 +2,12 @@
     "database": {
         "host": "127.0.0.1",
         "port": 27017,
-        "user": "root",
-        "password": "pass",
+        "user": "admin",
+        "password": "S6gJ3Kmk58BiAoF",
         "name": "aucs_moe_video"
     },
     "grpc": {
-        "url": "0.0.0.0:8080"
+        "url": "0.0.0.0:45678"
     },
     "jwt": {
         "secret": "2wkP6A72KiVrqitRUrxexB03qQGOLyui",

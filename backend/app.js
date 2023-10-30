@@ -67,7 +67,7 @@ function initGrpcServer() {
 
 function initStorageCallbackServer() {
     let app = express();
-    let port = 3000;
+    let port = 56789;
 
     app.use(bodyParser.json());
 
