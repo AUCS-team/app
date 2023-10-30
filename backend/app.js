@@ -2,6 +2,10 @@ const { MongoClient, ObjectId } = require('mongodb');
 const config = require('./config');
 const grpc = require('@grpc/grpc-js');
 const grpcProtoLoader = require('@grpc/proto-loader');
+const jwt = require('jsonwebtoken');
+const express = require('express');
+const bodyParser = require('body-parser');
+const qiniu = require('qiniu');
 
 const mongoUrl = 'mongodb://' + config.database.host + ':' + config.database.port;
 const mongoClient = new MongoClient(mongoUrl);
@@ -9,7 +13,17 @@ const mongoDatabaseName = config.database.name;
 const userCollectionName = 'user';
 const videoCollectionName = 'video';
 
-const grpcUrl = '0.0.0.0:8080';
+const grpcUrl = config.grpc.url;
+
+const jwtSecret = config.jwt.secret;
+const jwtExpireTime = config.jwt.expire;
+
+const qiniuStorageAccessKey = config.qiniu.storage.accessKey;
+const qiniuStorageSecretKey = config.qiniu.storage.secretKey;
+const qiniuStorageBucketName = config.qiniu.storage.bucketName;
+const qiniuStorageCallbackUrl = config.qiniu.storage.callbackUrl;
+const qiniuStorageCallbackBody = config.qiniu.storage.callbackBody;
+const qiniuStorageCallbackBodyType = config.qiniu.storage.callbackBodyType;
 
 let mongoConnection = null;
 let mongoDatabase = null;
@@ -27,22 +41,50 @@ function initGrpcServer() {
     let server = new grpc.Server();
     let packageDefinition = grpcProtoLoader.loadSync('../share/protobuf/app.proto');
     let appProto = grpc.loadPackageDefinition(packageDefinition).app;
-    server.addService(appProto.Meta.service, {
-        echo: echo,
-    });
-    server.addService(appProto.UserOperation.service, {
-        signUp: signUp,
-        signIn: signIn,
-        getUserInfoById: getUserInfoById,
-        getUserInfoByUsername: getUserInfoByUsername,
-    });
+
+    let metaImplementation = {
+        echo,
+    };
+
+    let userOperationImplementation = {
+        signUp,
+        signIn,
+        getUserInfoById,
+        getUserInfoByUsername,
+    };
+
+    let storageImplementation = {
+        getUploadToken,
+    };
+
+    server.addService(appProto.Meta.service, metaImplementation);
+    server.addService(appProto.UserOperation.service, userOperationImplementation);
+    server.addService(appProto.Storage.service, storageImplementation);
     server.bindAsync(grpcUrl, grpc.ServerCredentials.createInsecure(), () => {
         server.start();
     });
 }
 
+function initStorageCallbackServer() {
+    let app = express();
+    let port = 3000;
+
+    app.use(bodyParser.json());
+
+    app.post('/storage/callback', (req, res) => {
+        let requestData = req.body;
+        console.log('Received data:', requestData);
+        res.status(200).send({ "hello": "world" });
+    });
+
+    app.listen(port, () => {
+        console.log(`Server is running on port ${port}`);
+    });
+}
+
 function echo(call, callback) {
     callback(null, { "content": "This is Meta service, here is your message:" + call.request.content });
+    return;
 }
 
 function signUp(call, callback) {
@@ -56,6 +98,7 @@ function signUp(call, callback) {
         callback(null, {
             "ok": false,
         });
+        return;
     } else {
         mongoUserCollection.findOne({
             "username": username,
@@ -64,6 +107,7 @@ function signUp(call, callback) {
                 callback(null, {
                     "ok": false,
                 });
+                return;
             } else {
                 mongoUserCollection.insertOne({
                     "username": username,
@@ -73,10 +117,18 @@ function signUp(call, callback) {
                     "create_ip": ip,
                     "create_time": time
                 }).then((insertResult) => {
+                    let userid = insertResult.insertedId
+                    let token = jwt.sign({
+                        "userid": userid
+                    }, jwtSecret, {
+                        expiresIn: jwtExpireTime,
+                    });
                     callback(null, {
                         "ok": true,
-                        "userid": insertResult.insertedId,
+                        "userid": userid,
+                        "token": token,
                     });
+                    return;
                 });
             }
         });
@@ -98,11 +150,13 @@ function signIn(call, callback) {
                 callback(null, {
                     "ok": false,
                 });
+                return;
             } else if (result != null) {
                 callback(null, {
                     "ok": true,
                     "userid": result._id,
-                })
+                });
+                return;
             }
         });
     } else {
@@ -114,11 +168,20 @@ function signIn(call, callback) {
                 callback(null, {
                     "ok": false,
                 });
+                return;
             } else if (result != null) {
+                let userid = result._id
+                let token = jwt.sign({
+                    "userid": userid
+                }, jwtSecret, {
+                    expiresIn: jwtExpireTime,
+                });
                 callback(null, {
                     "ok": true,
-                    "userid": result._id,
+                    "userid": userid,
+                    "token": token,
                 });
+                return;
             }
         });
     }
@@ -134,6 +197,7 @@ function getUserInfoById(call, callback) {
             callback(null, {
                 "ok": false,
             });
+            return;
         } else if (result != null) {
             callback(null, {
                 "ok": true,
@@ -144,6 +208,7 @@ function getUserInfoById(call, callback) {
                 "create_ip": result.create_ip,
                 "create_time": result.create_time,
             });
+            return;
         }
     });
 }
@@ -158,6 +223,7 @@ function getUserInfoByUsername(call, callback) {
             callback(null, {
                 "ok": false,
             });
+            return;
         } else if (result != null) {
             callback(null, {
                 "ok": true,
@@ -168,13 +234,47 @@ function getUserInfoByUsername(call, callback) {
                 "create_ip": result.create_ip,
                 "create_time": result.create_time,
             });
+            return;
         }
     });
+}
+
+function getUploadToken(call, callback) {
+    let userToken = call.request.token;
+    let decoded = null;
+
+    try {
+        decoded = jwt.verify(userToken, jwtSecret);
+    } catch (err) {
+        callback(null, { "token": "" });
+        return;
+    }
+
+    if (decoded == null) {
+        callback(null, { "token": "" });
+        return;
+    }
+
+    let mac = new qiniu.auth.digest.Mac(qiniuStorageAccessKey, qiniuStorageSecretKey);
+
+    let options = {
+        scope: qiniuStorageBucketName,
+        callbackUrl: qiniuStorageCallbackUrl,
+        callbackBody: qiniuStorageCallbackBody,
+        callbackBodyType: qiniuStorageCallbackBodyType,
+    };
+
+    let putPolicy = new qiniu.rs.PutPolicy(options);
+    let uploadToken = putPolicy.uploadToken(mac);
+
+    callback(null, { "token": uploadToken });
+    return;
 }
 
 async function main() {
     await initMongoDatabaseConnection();
     initGrpcServer();
+    initStorageCallbackServer();
     console.log('hello world');
 }
 

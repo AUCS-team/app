@@ -7,11 +7,15 @@ service Meta {
 }
 
 service UserOperation {
-    rpc SignUp (SignUpRequest) returns (SignUpResponse) {}
-    rpc SignIn (SignInRequest) returns (SignInResponse) {}
+    rpc SignUp (SignUpRequest) returns (SignResponse) {}
+    rpc SignIn (SignInRequest) returns (SignResponse) {}
 
     rpc GetUserInfoById (GetUserInfoByIdRequest) returns (GetUserInfoResponse) {}
     rpc GetUserInfoByUsername (GetUserInfoByUsernameRequest) returns (GetUserInfoResponse) {}
+}
+
+service Storage {
+    rpc GetUploadToken (GetUploadTokenRequest) returns (GetUploadTokenResponse) {}
 }
 
 message EchoRequest {
@@ -28,19 +32,15 @@ message SignUpRequest {
     string email = 3;
 }
 
-message SignUpResponse {
-    bool ok = 1;
-    string userid = 2;
-}
-
 message SignInRequest {
     string account = 1;
     string password = 2;
 }
 
-message SignInResponse {
+message SignResponse {
     bool ok = 1;
     string userid = 2;
+    string token = 3;
 }
 
 message GetUserInfoByIdRequest {
@@ -59,4 +59,12 @@ message GetUserInfoResponse {
     string create_email = 5;
     string create_ip = 6;
     int32 create_time = 7;
+}
+
+message GetUploadTokenRequest {
+    string token = 1;
+}
+
+message GetUploadTokenResponse {
+    string token = 1;
 }
