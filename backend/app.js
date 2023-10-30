@@ -28,6 +28,7 @@ const qiniuStorageCallbackBody = config.qiniu.storage.callbackBody;
 const qiniuStorageCallbackBodyType = config.qiniu.storage.callbackBodyType;
 
 const expressPort = config.express.port;
+const expressCallbackPath = config.express.callbackPath;
 
 let mongoConnection = null;
 let mongoDatabase = null;
@@ -75,7 +76,7 @@ function initStorageCallbackServer() {
 
     app.use(bodyParser.json());
 
-    app.post('/storage/callback', (req, res) => {
+    app.post(expressCallbackPath, (req, res) => {
         let requestData = req.body;
         console.log('Received data:', requestData);
         res.status(200).send({ "hello": "world" });
