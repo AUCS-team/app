@@ -3,6 +3,8 @@ const config = require('./config');
 const grpc = require('@grpc/grpc-js');
 const grpcProtoLoader = require('@grpc/proto-loader');
 const jwt = require('jsonwebtoken');
+const express = require('express');
+const bodyParser = require('body-parser');
 
 const mongoUrl = 'mongodb://' + config.database.host + ':' + config.database.port;
 const mongoClient = new MongoClient(mongoUrl);
@@ -42,6 +44,23 @@ function initGrpcServer() {
     });
     server.bindAsync(grpcUrl, grpc.ServerCredentials.createInsecure(), () => {
         server.start();
+    });
+}
+
+function initStorageCallbackServer() {
+    let app = express();
+    let port = 3000;
+
+    app.use(bodyParser.json());
+    
+    app.post('/storage/callback', (req, res) => {
+      let requestData = req.body;
+      console.log('Received data:', requestData);
+      res.status(200).send({"hello": "world"});
+    });
+
+    app.listen(port, () => {
+      console.log(`Server is running on port ${port}`);
     });
 }
 
@@ -193,6 +212,7 @@ function getUserInfoByUsername(call, callback) {
 async function main() {
     await initMongoDatabaseConnection();
     initGrpcServer();
+    initStorageCallbackServer();
     console.log('hello world');
 }
 
