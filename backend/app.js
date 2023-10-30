@@ -21,6 +21,9 @@ const jwtExpireTime = config.jwt.expire;
 const qiniuStorageAccessKey = config.qiniu.storage.accessKey;
 const qiniuStorageSecretKey = config.qiniu.storage.secretKey;
 const qiniuStorageBucketName = config.qiniu.storage.bucketName;
+const qiniuStorageCallbackUrl = config.qiniu.storage.callbackUrl;
+const qiniuStorageCallbackBody = config.qiniu.storage.callbackBody;
+const qiniuStorageCallbackBodyType = config.qiniu.storage.callbackBodyType;
 
 let mongoConnection = null;
 let mongoDatabase = null;
@@ -256,6 +259,9 @@ function getUploadToken(call, callback) {
 
     let options = {
         scope: qiniuStorageBucketName,
+        callbackUrl: qiniuStorageCallbackUrl,
+        callbackBody: qiniuStorageCallbackBody,
+        callbackBodyType: qiniuStorageCallbackBodyType,
     };
 
     let putPolicy = new qiniu.rs.PutPolicy(options);
