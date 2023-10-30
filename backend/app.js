@@ -27,6 +27,8 @@ const qiniuStorageCallbackUrl = config.qiniu.storage.callbackUrl;
 const qiniuStorageCallbackBody = config.qiniu.storage.callbackBody;
 const qiniuStorageCallbackBodyType = config.qiniu.storage.callbackBodyType;
 
+const expressPort = config.express.port;
+
 let mongoConnection = null;
 let mongoDatabase = null;
 let mongoUserCollection = null;
@@ -69,7 +71,7 @@ function initGrpcServer() {
 
 function initStorageCallbackServer() {
     let app = express();
-    let port = 56789;
+    let port = expressPort;
 
     app.use(bodyParser.json());
 

@@ -22,5 +22,8 @@
             "callbackBody": "{'userToken':'$(x:userToken)','bucket':'$(bucket)','key':'$(key)','etag':'$(etag)','fname':'$(fname)','memeType':'$(memeType)'}",
             "callbackBodyType": "application/json"
         }
+    },
+    "express": {
+        "port": 56789
     }
 }
