@@ -191,13 +191,13 @@ proto.app.UserOperationPromiseClient =
  * @const
  * @type {!grpc.web.MethodDescriptor<
  *   !proto.app.SignUpRequest,
- *   !proto.app.SignUpResponse>}
+ *   !proto.app.SignResponse>}
  */
 const methodDescriptor_UserOperation_SignUp = new grpc.web.MethodDescriptor(
   '/app.UserOperation/SignUp',
   grpc.web.MethodType.UNARY,
   proto.app.SignUpRequest,
-  proto.app.SignUpResponse,
+  proto.app.SignResponse,
   /**
    * @param {!proto.app.SignUpRequest} request
    * @return {!Uint8Array}
@@ -205,7 +205,7 @@ const methodDescriptor_UserOperation_SignUp = new grpc.web.MethodDescriptor(
   function(request) {
     return request.serializeBinary();
   },
-  proto.app.SignUpResponse.deserializeBinary
+  proto.app.SignResponse.deserializeBinary
 );
 
 
@@ -214,9 +214,9 @@ const methodDescriptor_UserOperation_SignUp = new grpc.web.MethodDescriptor(
  *     request proto
  * @param {?Object<string, string>} metadata User defined
  *     call metadata
- * @param {function(?grpc.web.RpcError, ?proto.app.SignUpResponse)}
+ * @param {function(?grpc.web.RpcError, ?proto.app.SignResponse)}
  *     callback The callback function(error, response)
- * @return {!grpc.web.ClientReadableStream<!proto.app.SignUpResponse>|undefined}
+ * @return {!grpc.web.ClientReadableStream<!proto.app.SignResponse>|undefined}
  *     The XHR Node Readable Stream
  */
 proto.app.UserOperationClient.prototype.signUp =
@@ -235,7 +235,7 @@ proto.app.UserOperationClient.prototype.signUp =
  *     request proto
  * @param {?Object<string, string>=} metadata User defined
  *     call metadata
- * @return {!Promise<!proto.app.SignUpResponse>}
+ * @return {!Promise<!proto.app.SignResponse>}
  *     Promise that resolves to the response
  */
 proto.app.UserOperationPromiseClient.prototype.signUp =
@@ -252,13 +252,13 @@ proto.app.UserOperationPromiseClient.prototype.signUp =
  * @const
  * @type {!grpc.web.MethodDescriptor<
  *   !proto.app.SignInRequest,
- *   !proto.app.SignInResponse>}
+ *   !proto.app.SignResponse>}
  */
 const methodDescriptor_UserOperation_SignIn = new grpc.web.MethodDescriptor(
   '/app.UserOperation/SignIn',
   grpc.web.MethodType.UNARY,
   proto.app.SignInRequest,
-  proto.app.SignInResponse,
+  proto.app.SignResponse,
   /**
    * @param {!proto.app.SignInRequest} request
    * @return {!Uint8Array}
@@ -266,7 +266,7 @@ const methodDescriptor_UserOperation_SignIn = new grpc.web.MethodDescriptor(
   function(request) {
     return request.serializeBinary();
   },
-  proto.app.SignInResponse.deserializeBinary
+  proto.app.SignResponse.deserializeBinary
 );
 
 
@@ -275,9 +275,9 @@ const methodDescriptor_UserOperation_SignIn = new grpc.web.MethodDescriptor(
  *     request proto
  * @param {?Object<string, string>} metadata User defined
  *     call metadata
- * @param {function(?grpc.web.RpcError, ?proto.app.SignInResponse)}
+ * @param {function(?grpc.web.RpcError, ?proto.app.SignResponse)}
  *     callback The callback function(error, response)
- * @return {!grpc.web.ClientReadableStream<!proto.app.SignInResponse>|undefined}
+ * @return {!grpc.web.ClientReadableStream<!proto.app.SignResponse>|undefined}
  *     The XHR Node Readable Stream
  */
 proto.app.UserOperationClient.prototype.signIn =
@@ -296,7 +296,7 @@ proto.app.UserOperationClient.prototype.signIn =
  *     request proto
  * @param {?Object<string, string>=} metadata User defined
  *     call metadata
- * @return {!Promise<!proto.app.SignInResponse>}
+ * @return {!Promise<!proto.app.SignResponse>}
  *     Promise that resolves to the response
  */
 proto.app.UserOperationPromiseClient.prototype.signIn =
@@ -428,6 +428,119 @@ proto.app.UserOperationPromiseClient.prototype.getUserInfoByUsername =
       request,
       metadata || {},
       methodDescriptor_UserOperation_GetUserInfoByUsername);
+};
+
+
+/**
+ * @param {string} hostname
+ * @param {?Object} credentials
+ * @param {?grpc.web.ClientOptions} options
+ * @constructor
+ * @struct
+ * @final
+ */
+proto.app.StorageClient =
+    function(hostname, credentials, options) {
+  if (!options) options = {};
+  options.format = 'text';
+
+  /**
+   * @private @const {!grpc.web.GrpcWebClientBase} The client
+   */
+  this.client_ = new grpc.web.GrpcWebClientBase(options);
+
+  /**
+   * @private @const {string} The hostname
+   */
+  this.hostname_ = hostname.replace(/\/+$/, '');
+
+};
+
+
+/**
+ * @param {string} hostname
+ * @param {?Object} credentials
+ * @param {?grpc.web.ClientOptions} options
+ * @constructor
+ * @struct
+ * @final
+ */
+proto.app.StoragePromiseClient =
+    function(hostname, credentials, options) {
+  if (!options) options = {};
+  options.format = 'text';
+
+  /**
+   * @private @const {!grpc.web.GrpcWebClientBase} The client
+   */
+  this.client_ = new grpc.web.GrpcWebClientBase(options);
+
+  /**
+   * @private @const {string} The hostname
+   */
+  this.hostname_ = hostname.replace(/\/+$/, '');
+
+};
+
+
+/**
+ * @const
+ * @type {!grpc.web.MethodDescriptor<
+ *   !proto.app.GetUploadTokenRequest,
+ *   !proto.app.GetUploadTokenResponse>}
+ */
+const methodDescriptor_Storage_GetUploadToken = new grpc.web.MethodDescriptor(
+  '/app.Storage/GetUploadToken',
+  grpc.web.MethodType.UNARY,
+  proto.app.GetUploadTokenRequest,
+  proto.app.GetUploadTokenResponse,
+  /**
+   * @param {!proto.app.GetUploadTokenRequest} request
+   * @return {!Uint8Array}
+   */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.app.GetUploadTokenResponse.deserializeBinary
+);
+
+
+/**
+ * @param {!proto.app.GetUploadTokenRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @param {function(?grpc.web.RpcError, ?proto.app.GetUploadTokenResponse)}
+ *     callback The callback function(error, response)
+ * @return {!grpc.web.ClientReadableStream<!proto.app.GetUploadTokenResponse>|undefined}
+ *     The XHR Node Readable Stream
+ */
+proto.app.StorageClient.prototype.getUploadToken =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/app.Storage/GetUploadToken',
+      request,
+      metadata || {},
+      methodDescriptor_Storage_GetUploadToken,
+      callback);
+};
+
+
+/**
+ * @param {!proto.app.GetUploadTokenRequest} request The
+ *     request proto
+ * @param {?Object<string, string>=} metadata User defined
+ *     call metadata
+ * @return {!Promise<!proto.app.GetUploadTokenResponse>}
+ *     Promise that resolves to the response
+ */
+proto.app.StoragePromiseClient.prototype.getUploadToken =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/app.Storage/GetUploadToken',
+      request,
+      metadata || {},
+      methodDescriptor_Storage_GetUploadToken);
 };
 
 
