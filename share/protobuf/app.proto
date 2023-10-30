@@ -14,6 +14,10 @@ service UserOperation {
     rpc GetUserInfoByUsername (GetUserInfoByUsernameRequest) returns (GetUserInfoResponse) {}
 }
 
+service Storage {
+    rpc GetUploadToken (GetUploadTokenRequest) returns (GetUploadTokenResponse) {}
+}
+
 message EchoRequest {
     string content = 1;
 }
@@ -55,4 +59,12 @@ message GetUserInfoResponse {
     string create_email = 5;
     string create_ip = 6;
     int32 create_time = 7;
+}
+
+message GetUploadTokenRequest {
+    string token = 1;
+}
+
+message GetUploadTokenResponse {
+    string token = 1;
 }
