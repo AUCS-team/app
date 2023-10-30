@@ -33,15 +33,20 @@ function initGrpcServer() {
     let server = new grpc.Server();
     let packageDefinition = grpcProtoLoader.loadSync('../share/protobuf/app.proto');
     let appProto = grpc.loadPackageDefinition(packageDefinition).app;
-    server.addService(appProto.Meta.service, {
-        echo: echo,
-    });
-    server.addService(appProto.UserOperation.service, {
-        signUp: signUp,
-        signIn: signIn,
-        getUserInfoById: getUserInfoById,
-        getUserInfoByUsername: getUserInfoByUsername,
-    });
+
+    let metaImplementation = {
+        echo,
+    };
+
+    let userOperationImplementation = {
+        signUp,
+        signIn,
+        getUserInfoById,
+        getUserInfoByUsername,
+    };
+
+    server.addService(appProto.Meta.service, metaImplementation);
+    server.addService(appProto.UserOperation.service, userOperationImplementation);
     server.bindAsync(grpcUrl, grpc.ServerCredentials.createInsecure(), () => {
         server.start();
     });
