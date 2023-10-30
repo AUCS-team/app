@@ -234,6 +234,10 @@ function getUploadToken(call, callback) {
         callback(null, { "token": "" });
     }
 
+    if (decoded == null) {
+        callback(null, { "token": "" });
+    }
+
     let mac = new qiniu.auth.digest.Mac(qiniuStorageAccessKey, qiniuStorageSecretKey);
 
     let options = {
