@@ -39,7 +39,7 @@ async function initMongoDatabaseConnection() {
 
 function initGrpcServer() {
     let server = new grpc.Server();
-    let packageDefinition = grpcProtoLoader.loadSync('../share/protobuf/app.proto');
+    let packageDefinition = grpcProtoLoader.loadSync('protobuf/app.proto');
     let appProto = grpc.loadPackageDefinition(packageDefinition).app;
 
     let metaImplementation = {
