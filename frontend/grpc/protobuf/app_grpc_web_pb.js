@@ -544,5 +544,118 @@ proto.app.StoragePromiseClient.prototype.getUploadToken =
 };
 
 
+/**
+ * @param {string} hostname
+ * @param {?Object} credentials
+ * @param {?grpc.web.ClientOptions} options
+ * @constructor
+ * @struct
+ * @final
+ */
+proto.app.VideoClient =
+    function(hostname, credentials, options) {
+  if (!options) options = {};
+  options.format = 'text';
+
+  /**
+   * @private @const {!grpc.web.GrpcWebClientBase} The client
+   */
+  this.client_ = new grpc.web.GrpcWebClientBase(options);
+
+  /**
+   * @private @const {string} The hostname
+   */
+  this.hostname_ = hostname.replace(/\/+$/, '');
+
+};
+
+
+/**
+ * @param {string} hostname
+ * @param {?Object} credentials
+ * @param {?grpc.web.ClientOptions} options
+ * @constructor
+ * @struct
+ * @final
+ */
+proto.app.VideoPromiseClient =
+    function(hostname, credentials, options) {
+  if (!options) options = {};
+  options.format = 'text';
+
+  /**
+   * @private @const {!grpc.web.GrpcWebClientBase} The client
+   */
+  this.client_ = new grpc.web.GrpcWebClientBase(options);
+
+  /**
+   * @private @const {string} The hostname
+   */
+  this.hostname_ = hostname.replace(/\/+$/, '');
+
+};
+
+
+/**
+ * @const
+ * @type {!grpc.web.MethodDescriptor<
+ *   !proto.app.GetVideoFromTypeRequest,
+ *   !proto.app.GetVideoFromTypeResponse>}
+ */
+const methodDescriptor_Video_GetVideoFromType = new grpc.web.MethodDescriptor(
+  '/app.Video/GetVideoFromType',
+  grpc.web.MethodType.UNARY,
+  proto.app.GetVideoFromTypeRequest,
+  proto.app.GetVideoFromTypeResponse,
+  /**
+   * @param {!proto.app.GetVideoFromTypeRequest} request
+   * @return {!Uint8Array}
+   */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.app.GetVideoFromTypeResponse.deserializeBinary
+);
+
+
+/**
+ * @param {!proto.app.GetVideoFromTypeRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @param {function(?grpc.web.RpcError, ?proto.app.GetVideoFromTypeResponse)}
+ *     callback The callback function(error, response)
+ * @return {!grpc.web.ClientReadableStream<!proto.app.GetVideoFromTypeResponse>|undefined}
+ *     The XHR Node Readable Stream
+ */
+proto.app.VideoClient.prototype.getVideoFromType =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/app.Video/GetVideoFromType',
+      request,
+      metadata || {},
+      methodDescriptor_Video_GetVideoFromType,
+      callback);
+};
+
+
+/**
+ * @param {!proto.app.GetVideoFromTypeRequest} request The
+ *     request proto
+ * @param {?Object<string, string>=} metadata User defined
+ *     call metadata
+ * @return {!Promise<!proto.app.GetVideoFromTypeResponse>}
+ *     Promise that resolves to the response
+ */
+proto.app.VideoPromiseClient.prototype.getVideoFromType =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/app.Video/GetVideoFromType',
+      request,
+      metadata || {},
+      methodDescriptor_Video_GetVideoFromType);
+};
+
+
 module.exports = proto.app;
 

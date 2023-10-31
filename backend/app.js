@@ -62,9 +62,14 @@ function initGrpcServer() {
         getUploadToken,
     };
 
+    let videoImplementation = {
+        getVideoFromType,
+    }
+
     server.addService(appProto.Meta.service, metaImplementation);
     server.addService(appProto.UserOperation.service, userOperationImplementation);
     server.addService(appProto.Storage.service, storageImplementation);
+    server.addService(appProto.Video.service, videoImplementation);
     server.bindAsync(grpcUrl, grpc.ServerCredentials.createInsecure(), () => {
         server.start();
     });
@@ -77,9 +82,49 @@ function initStorageCallbackServer() {
     app.use(bodyParser.json());
 
     app.post(expressCallbackPath, (req, res) => {
-        let requestData = req.body;
-        console.log('Received data:', requestData);
-        res.status(200).send({ "hello": "world" });
+        //let requestData = req.body;
+        //console.log('Received data:', requestData);
+        //res.status(200).send({ "hello": "world" });
+        let body = req.body;
+        let userToken = body.userToken;
+        let decoded = null;
+
+        try {
+            decoded = jwt.verify(userToken, jwtSecret);
+        } catch (err) {
+            res.status(200).send({"ok": false});
+            return;
+        }
+
+        if (decoded === null) {
+            res.status(200).send({"ok": false});
+            return;
+        }
+
+        let userid = decoded.userid;
+        let videoTitle = body.videoTitle;
+        let videoType = body.videoType;
+        let bucket = body.bucket;
+        let key = body.key;
+        let etag = body.etag;
+        let fname = body.fname;
+        let memeType = body.memeType;
+        let uploadTime = new Date().getTime();
+
+        mongoVideoCollection.insertOne({
+            "videoTitle": videoTitle,
+            "videoType": videoType,
+            "userid": userid,
+            "bucket": bucket,
+            "key": key,
+            "etag": etag,
+            "fname": fname,
+            "memeType": memeType,
+            "uploadTime": uploadTime,
+        }).then((result) => {
+            res.status(200).send({"ok": true});
+            return;
+        });
     });
 
     app.listen(port, () => {
@@ -274,6 +319,26 @@ function getUploadToken(call, callback) {
 
     callback(null, { "token": uploadToken });
     return;
+}
+
+function getVideoFromType(call, callback) {
+    let type = call.request.type;
+
+    if (type === "") {
+        mongoVideoCollection.find({}).toArray().then((result) => {
+            if (result === null) {
+                callback(null, {"info": []});
+                return;
+            }
+        });
+    } else {
+        mongoVideoCollection.find({"type": type}).toArray().then((result) => {
+            if (result === null) {
+                callback(null, {"info": []});
+                return;
+            }
+        });
+    }
 }
 
 async function main() {

@@ -19,7 +19,7 @@
             "secretKey": "CQHG8a23c6oLEnKCr6ol1b9BidCeO6-nMyFA7S8I",
             "bucketName": "ascu-cloud",
             "callbackUrl": "https://cialloo.com/aucs_moe_video/storage/callback",
-            "callbackBody": "{'userToken':'$(x:userToken)','bucket':'$(bucket)','key':'$(key)','etag':'$(etag)','fname':'$(fname)','memeType':'$(memeType)'}",
+            "callbackBody": "{'userToken':'$(x:userToken)','videoTitle':'$(x:videoTitle)','videoType':'$(x:videoType)','bucket':'$(bucket)','key':'$(key)','etag':'$(etag)','fname':'$(fname)','memeType':'$(memeType)'}",
             "callbackBodyType": "application/json"
         }
     },

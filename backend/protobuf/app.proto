@@ -18,6 +18,10 @@ service Storage {
     rpc GetUploadToken (GetUploadTokenRequest) returns (GetUploadTokenResponse) {}
 }
 
+service Video {
+    rpc GetVideoFromType (GetVideoFromTypeRequest) returns (GetVideoFromTypeResponse) {}
+}
+
 message EchoRequest {
     string content = 1;
 }
@@ -67,4 +71,20 @@ message GetUploadTokenRequest {
 
 message GetUploadTokenResponse {
     string token = 1;
+}
+
+message GetVideoFromTypeRequest {
+    string type = 1;
+}
+
+message VideoInfoStructure {
+    string videoTitle = 1;
+    string videoType = 2;
+    string userid = 3;
+    string url = 4;
+    int32 uploadTime = 5;
+}
+
+message GetVideoFromTypeResponse {
+    repeated VideoInfoStructure info = 1;
 }
