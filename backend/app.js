@@ -14,6 +14,7 @@ const mongoClient = new MongoClient(mongoUrl);
 const mongoDatabaseName = config.database.name;
 const userCollectionName = 'user';
 const videoCollectionName = 'video';
+const historyCollectionName = 'history';
 
 const grpcUrl = config.grpc.url;
 
@@ -35,12 +36,14 @@ let mongoConnection = null;
 let mongoDatabase = null;
 let mongoUserCollection = null;
 let mongoVideoCollection = null;
+let mongoHistoryCollection = null;
 
 async function initMongoDatabaseConnection() {
     mongoConnection = await mongoClient.connect();
     mongoDatabase = mongoConnection.db(mongoDatabaseName);
     mongoUserCollection = mongoDatabase.collection(userCollectionName);
     mongoVideoCollection = mongoDatabase.collection(videoCollectionName);
+    mongoHistoryCollection = mongoDatabase.collection(historyCollectionName);
 }
 
 function initGrpcServer() {
@@ -65,6 +68,7 @@ function initGrpcServer() {
 
     let videoImplementation = {
         getVideoFromType,
+        addVideoHistory,
     }
 
     server.addService(appProto.Meta.service, metaImplementation);
@@ -366,6 +370,21 @@ function getVideoFromType(call, callback) {
             }
         });
     }
+}
+
+function addVideoHistory(call, callback) {
+    let userid = call.request.userid;
+    let videoid = call.request.videoid;
+    let time = new Date().getTime();
+
+    mongoHistoryCollection.insertOne({
+        "userid": userid,
+        "videoid": videoid,
+        "watch_time": time,
+    }).then((result) => {
+        callback(null, {"ok": true});
+        return;
+    });
 }
 
 async function main() {

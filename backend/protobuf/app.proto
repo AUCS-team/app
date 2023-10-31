@@ -20,6 +20,7 @@ service Storage {
 
 service Video {
     rpc GetVideoFromType (GetVideoFromTypeRequest) returns (GetVideoFromTypeResponse) {}
+    rpc AddVideoHistory (AddVideoHistoryRequest) returns (EmptyResponse) {}
 }
 
 message EchoRequest {
@@ -28,6 +29,10 @@ message EchoRequest {
 
 message EchoResponse {
     string content = 2;
+}
+
+message EmptyResponse {
+    bool ok = 1;
 }
 
 message SignUpRequest {
@@ -88,4 +93,9 @@ message VideoInfoStructure {
 
 message GetVideoFromTypeResponse {
     repeated VideoInfoStructure info = 1;
+}
+
+message AddVideoHistoryRequest {
+    string userid = 1;
+    string videoid = 2;
 }
