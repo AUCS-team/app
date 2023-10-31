@@ -20,7 +20,8 @@
             "bucketName": "ascu-cloud",
             "callbackUrl": "https://cialloo.com/aucs_moe_video/storage/callback",
             "callbackBody": "{'userToken':'$(x:userToken)','videoTitle':'$(x:videoTitle)','videoType':'$(x:videoType)','bucket':'$(bucket)','key':'$(key)','etag':'$(etag)','fname':'$(fname)','memeType':'$(memeType)'}",
-            "callbackBodyType": "application/json"
+            "callbackBodyType": "application/json",
+            "bucketDomain": "http//s31cnjopd.bkt.clouddn.com"
         }
     },
     "express": {

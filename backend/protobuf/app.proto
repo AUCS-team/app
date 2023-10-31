@@ -78,11 +78,12 @@ message GetVideoFromTypeRequest {
 }
 
 message VideoInfoStructure {
-    string videoTitle = 1;
-    string videoType = 2;
-    string userid = 3;
-    string url = 4;
-    int32 uploadTime = 5;
+    string videoid = 1;
+    string videoTitle = 2;
+    string videoType = 3;
+    string userid = 4;
+    string url = 5;
+    int32 uploadTime = 6;
 }
 
 message GetVideoFromTypeResponse {

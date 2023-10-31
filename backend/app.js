@@ -26,6 +26,7 @@ const qiniuStorageBucketName = config.qiniu.storage.bucketName;
 const qiniuStorageCallbackUrl = config.qiniu.storage.callbackUrl;
 const qiniuStorageCallbackBody = config.qiniu.storage.callbackBody;
 const qiniuStorageCallbackBodyType = config.qiniu.storage.callbackBodyType;
+const qiniuStorageBucketDomain = config.qiniu.storage.bucketDomain;
 
 const expressPort = config.express.port;
 const expressCallbackPath = config.express.callbackPath;
@@ -321,13 +322,39 @@ function getUploadToken(call, callback) {
     return;
 }
 
+function _getVideoUrl(key) {
+    let mac = new qiniu.auth.digest.Mac(qiniuStorageAccessKey, qiniuStorageSecretKey);
+    let config = new qiniu.conf.Config();
+    let bucketManager = new qiniu.rs.BucketManager(mac, config);
+    let privateBucketDomain = qiniuStorageBucketDomain;
+    let deadline = parseInt(Date.now() / 1000) + 3600; // 1小时过期
+    let privateDownloadUrl = bucketManager.privateDownloadUrl(privateBucketDomain, key, deadline);
+    return privateDownloadUrl;
+}
+
 function getVideoFromType(call, callback) {
     let type = call.request.type;
 
     if (type === "") {
         mongoVideoCollection.find({}).toArray().then((result) => {
             if (result === null) {
-                callback(null, {"info": []});
+                let array = [];
+                
+                for (let i = 0; i < result.length; i++) {
+                    let key = result[i].key;
+                    let url = _getVideoUrl(key);
+
+                    array.push({
+                        "videoid": result[i]._id,
+                        "videoTitle": result[i].videoTitle,
+                        "videoType": result[i].videoType,
+                        "userid": result[i].userid,
+                        "url": url,
+                        "uploadTime": result[i].uploadTime,
+                    });
+                }
+
+                callback(null, {"info": array});
                 return;
             }
         });
