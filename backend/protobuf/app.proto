@@ -12,6 +12,8 @@ service UserOperation {
 
     rpc GetUserInfoById (GetUserInfoByIdRequest) returns (GetUserInfoResponse) {}
     rpc GetUserInfoByUsername (GetUserInfoByUsernameRequest) returns (GetUserInfoResponse) {}
+
+    rpc AddUserFavourite (AddUserFavouriteRequest) returns (EmptyResponse) {}
 }
 
 service Storage {
@@ -96,6 +98,11 @@ message GetVideoFromTypeResponse {
 }
 
 message AddVideoHistoryRequest {
+    string userid = 1;
+    string videoid = 2;
+}
+
+message AddUserFavouriteRequest {
     string userid = 1;
     string videoid = 2;
 }

@@ -15,6 +15,7 @@ const mongoDatabaseName = config.database.name;
 const userCollectionName = 'user';
 const videoCollectionName = 'video';
 const historyCollectionName = 'history';
+const favouriteCollectionName = 'favourite';
 
 const grpcUrl = config.grpc.url;
 
@@ -37,6 +38,7 @@ let mongoDatabase = null;
 let mongoUserCollection = null;
 let mongoVideoCollection = null;
 let mongoHistoryCollection = null;
+let mongoFavouriteCollection = null;
 
 async function initMongoDatabaseConnection() {
     mongoConnection = await mongoClient.connect();
@@ -44,6 +46,7 @@ async function initMongoDatabaseConnection() {
     mongoUserCollection = mongoDatabase.collection(userCollectionName);
     mongoVideoCollection = mongoDatabase.collection(videoCollectionName);
     mongoHistoryCollection = mongoDatabase.collection(historyCollectionName);
+    mongoFavouriteCollection = mongoDatabase.collection(favouriteCollectionName);
 }
 
 function initGrpcServer() {
@@ -60,6 +63,7 @@ function initGrpcServer() {
         signIn,
         getUserInfoById,
         getUserInfoByUsername,
+        addUserFavourite,
     };
 
     let storageImplementation = {
@@ -373,6 +377,21 @@ function getVideoFromType(call, callback) {
 }
 
 function addVideoHistory(call, callback) {
+    let userid = call.request.userid;
+    let videoid = call.request.videoid;
+    let time = new Date().getTime();
+
+    mongoHistoryCollection.insertOne({
+        "userid": userid,
+        "videoid": videoid,
+        "watch_time": time,
+    }).then((result) => {
+        callback(null, { "ok": true });
+        return;
+    });
+}
+
+function addUserFavourite(call, callback) {
     let userid = call.request.userid;
     let videoid = call.request.videoid;
     let time = new Date().getTime();
