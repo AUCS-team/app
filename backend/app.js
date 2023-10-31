@@ -97,12 +97,12 @@ function initStorageCallbackServer() {
         try {
             decoded = jwt.verify(userToken, jwtSecret);
         } catch (err) {
-            res.status(200).send({"ok": false});
+            res.status(200).send({ "ok": false });
             return;
         }
 
         if (decoded === null) {
-            res.status(200).send({"ok": false});
+            res.status(200).send({ "ok": false });
             return;
         }
 
@@ -127,7 +127,7 @@ function initStorageCallbackServer() {
             "memeType": memeType,
             "uploadTime": uploadTime,
         }).then((result) => {
-            res.status(200).send({"ok": true});
+            res.status(200).send({ "ok": true });
             return;
         });
     });
@@ -343,7 +343,7 @@ function getVideoFromType(call, callback) {
         mongoVideoCollection.find({}).toArray().then((result) => {
             if (result === null) {
                 let array = [];
-                
+
                 for (let i = 0; i < result.length; i++) {
                     let key = result[i].key;
                     let url = _getVideoUrl(key);
@@ -358,14 +358,14 @@ function getVideoFromType(call, callback) {
                     });
                 }
 
-                callback(null, {"info": array});
+                callback(null, { "info": array });
                 return;
             }
         });
     } else {
-        mongoVideoCollection.find({"type": type}).toArray().then((result) => {
+        mongoVideoCollection.find({ "type": type }).toArray().then((result) => {
             if (result === null) {
-                callback(null, {"info": []});
+                callback(null, { "info": [] });
                 return;
             }
         });
@@ -382,7 +382,7 @@ function addVideoHistory(call, callback) {
         "videoid": videoid,
         "watch_time": time,
     }).then((result) => {
-        callback(null, {"ok": true});
+        callback(null, { "ok": true });
         return;
     });
 }
