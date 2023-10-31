@@ -19,7 +19,7 @@ service Storage {
 }
 
 service Video {
-    rpc GetVideoLinkFromType (GetVideoLinkFromTypeRequest) returns (GetVideoLinkFromTypeResponse) {}
+    rpc GetVideoFromType (GetVideoFromTypeRequest) returns (GetVideoFromTypeResponse) {}
 }
 
 message EchoRequest {
@@ -73,7 +73,7 @@ message GetUploadTokenResponse {
     string token = 1;
 }
 
-message GetVideoLinkFromTypeRequest {
+message GetVideoFromTypeRequest {
     string type = 1;
 }
 
@@ -81,9 +81,10 @@ message VideoInfoStructure {
     string videoTitle = 1;
     string videoType = 2;
     string userid = 3;
-    int32 uploadTime = 4;
+    string url = 4;
+    int32 uploadTime = 5;
 }
 
-message GetVideoLinkFromTypeResponse {
+message GetVideoFromTypeResponse {
     repeated VideoInfoStructure info = 1;
 }
