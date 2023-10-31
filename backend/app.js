@@ -62,9 +62,14 @@ function initGrpcServer() {
         getUploadToken,
     };
 
+    let videoImplementation = {
+        getVideoFromType,
+    }
+
     server.addService(appProto.Meta.service, metaImplementation);
     server.addService(appProto.UserOperation.service, userOperationImplementation);
     server.addService(appProto.Storage.service, storageImplementation);
+    server.addService(appProto.Video.service, videoImplementation);
     server.bindAsync(grpcUrl, grpc.ServerCredentials.createInsecure(), () => {
         server.start();
     });
@@ -314,6 +319,26 @@ function getUploadToken(call, callback) {
 
     callback(null, { "token": uploadToken });
     return;
+}
+
+function getVideoFromType(call, callback) {
+    let type = call.request.type;
+
+    if (type === "") {
+        mongoVideoCollection.find({}).toArray().then((result) => {
+            if (result === null) {
+                callback(null, {"info": []});
+                return;
+            }
+        });
+    } else {
+        mongoVideoCollection.find({"type": type}).toArray().then((result) => {
+            if (result === null) {
+                callback(null, {"info": []});
+                return;
+            }
+        });
+    }
 }
 
 async function main() {
