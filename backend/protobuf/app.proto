@@ -26,6 +26,7 @@ service Video {
 service Community {
     rpc AddUserFavourite (AddUserFavouriteRequest) returns (EmptyResponse) {}
     rpc AddUserLike (AddUserLikeRequest) returns (EmptyResponse) {}
+    rpc AddVideoComment (AddVideoCommentRequest) returns (EmptyResponse) {}
 }
 
 message EchoRequest {
@@ -113,4 +114,10 @@ message AddUserFavouriteRequest {
 message AddUserLikeRequest {
     string userid = 1;
     string videoid = 2;
+}
+
+message AddVideoCommentRequest {
+    string userid = 1;
+    string videoid = 2;
+    string content = 3;
 }

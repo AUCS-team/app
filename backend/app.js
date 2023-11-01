@@ -17,6 +17,7 @@ const videoCollectionName = 'video';
 const historyCollectionName = 'history';
 const favouriteCollectionName = 'favourite';
 const likeCollectionName = 'like';
+const commentCollectionName = 'comment';
 
 const grpcUrl = config.grpc.url;
 
@@ -41,6 +42,7 @@ let mongoVideoCollection = null;
 let mongoHistoryCollection = null;
 let mongoFavouriteCollection = null;
 let mongoLikeCollection = null;
+let mongoCommentCollection = null;
 
 async function initMongoDatabaseConnection() {
     mongoConnection = await mongoClient.connect();
@@ -50,6 +52,7 @@ async function initMongoDatabaseConnection() {
     mongoHistoryCollection = mongoDatabase.collection(historyCollectionName);
     mongoFavouriteCollection = mongoDatabase.collection(favouriteCollectionName);
     mongoLikeCollection = mongoDatabase.collection(likeCollectionName);
+    mongoCommentCollection = mongoDatabase.collection(commentCollectionName);
 }
 
 function initGrpcServer() {
@@ -80,6 +83,7 @@ function initGrpcServer() {
     let communityImplementation = {
         addUserFavourite,
         addUserLike,
+        addVideoComment,
     };
 
     server.addService(appProto.Meta.service, metaImplementation);
@@ -423,6 +427,23 @@ function addUserLike(call, callback) {
         "userid": userid,
         "videoid": videoid,
         "like_time": time,
+    }).then((result) => {
+        callback(null, { "ok": true });
+        return;
+    });
+}
+
+function addVideoComment(call, callback) {
+    let userid = call.request.userid;
+    let videoid = call.request.videoid;
+    let content = call.request.content;
+    let time = new Date().getTime();
+
+    mongoCommentCollection.insertOne({
+        "userid": userid,
+        "videoid": videoid,
+        "content": content,
+        "comment_time": time,
     }).then((result) => {
         callback(null, { "ok": true });
         return;
