@@ -6,6 +6,6 @@ npx grpc_tools_node_protoc --js_out=import_style=commonjs,binary:jslib --grpc_ou
 ```
 Generate for frontend
 ```
-protoc --plugin=protoc-gen-grpc-web="C:\protobuf\bin\protoc-gen-grpc-web.exe" --grpc-web_out=import_style=commonjs,mode=grpcwebtext:../frontend/grpc protobuf/app.proto
-protoc --js_out=import_style=commonjs,binary:../frontend/grpc protobuf/app.proto
+protoc --plugin=protoc-gen-grpc-web="C:\protobuf\bin\protoc-gen-grpc-web.exe" --grpc-web_out=import_style=closure,mode=grpcwebtext:../frontend/grpc protobuf/app.proto
+protoc --js_out=library=app_pb,binary:../frontend/grpc/protobuf protobuf/app.proto
 ```

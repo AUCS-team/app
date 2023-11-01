@@ -14,6 +14,11 @@ const mongoClient = new MongoClient(mongoUrl);
 const mongoDatabaseName = config.database.name;
 const userCollectionName = 'user';
 const videoCollectionName = 'video';
+const historyCollectionName = 'history';
+const favouriteCollectionName = 'favourite';
+const likeCollectionName = 'like';
+const commentCollectionName = 'comment';
+const bulletCollectionName = 'bullet';
 
 const grpcUrl = config.grpc.url;
 
@@ -26,6 +31,7 @@ const qiniuStorageBucketName = config.qiniu.storage.bucketName;
 const qiniuStorageCallbackUrl = config.qiniu.storage.callbackUrl;
 const qiniuStorageCallbackBody = config.qiniu.storage.callbackBody;
 const qiniuStorageCallbackBodyType = config.qiniu.storage.callbackBodyType;
+const qiniuStorageBucketDomain = config.qiniu.storage.bucketDomain;
 
 const expressPort = config.express.port;
 const expressCallbackPath = config.express.callbackPath;
@@ -34,12 +40,22 @@ let mongoConnection = null;
 let mongoDatabase = null;
 let mongoUserCollection = null;
 let mongoVideoCollection = null;
+let mongoHistoryCollection = null;
+let mongoFavouriteCollection = null;
+let mongoLikeCollection = null;
+let mongoCommentCollection = null;
+let mongoBulletCollection = null;
 
 async function initMongoDatabaseConnection() {
     mongoConnection = await mongoClient.connect();
     mongoDatabase = mongoConnection.db(mongoDatabaseName);
     mongoUserCollection = mongoDatabase.collection(userCollectionName);
     mongoVideoCollection = mongoDatabase.collection(videoCollectionName);
+    mongoHistoryCollection = mongoDatabase.collection(historyCollectionName);
+    mongoFavouriteCollection = mongoDatabase.collection(favouriteCollectionName);
+    mongoLikeCollection = mongoDatabase.collection(likeCollectionName);
+    mongoCommentCollection = mongoDatabase.collection(commentCollectionName);
+    mongoBulletCollection = mongoDatabase.collection(bulletCollectionName);
 }
 
 function initGrpcServer() {
@@ -64,12 +80,27 @@ function initGrpcServer() {
 
     let videoImplementation = {
         getVideoFromType,
-    }
+        addVideoHistory,
+    };
+
+    let communityImplementation = {
+        addUserFavourite,
+        getUserFavourite,
+        getVideoFavourit,
+        addUserLike,
+        getUserLike,
+        getVideoLike,
+        addVideoComment,
+        getVideoComment,
+        addVideoBullet,
+        getVideoBullet,
+    };
 
     server.addService(appProto.Meta.service, metaImplementation);
     server.addService(appProto.UserOperation.service, userOperationImplementation);
     server.addService(appProto.Storage.service, storageImplementation);
     server.addService(appProto.Video.service, videoImplementation);
+    server.addService(appProto.Community.service, communityImplementation);
     server.bindAsync(grpcUrl, grpc.ServerCredentials.createInsecure(), () => {
         server.start();
     });
@@ -92,12 +123,12 @@ function initStorageCallbackServer() {
         try {
             decoded = jwt.verify(userToken, jwtSecret);
         } catch (err) {
-            res.status(200).send({"ok": false});
+            res.status(200).send({ "ok": false });
             return;
         }
 
         if (decoded === null) {
-            res.status(200).send({"ok": false});
+            res.status(200).send({ "ok": false });
             return;
         }
 
@@ -122,7 +153,7 @@ function initStorageCallbackServer() {
             "memeType": memeType,
             "uploadTime": uploadTime,
         }).then((result) => {
-            res.status(200).send({"ok": true});
+            res.status(200).send({ "ok": true });
             return;
         });
     });
@@ -321,24 +352,255 @@ function getUploadToken(call, callback) {
     return;
 }
 
+function _getVideoUrl(key) {
+    let mac = new qiniu.auth.digest.Mac(qiniuStorageAccessKey, qiniuStorageSecretKey);
+    let config = new qiniu.conf.Config();
+    let bucketManager = new qiniu.rs.BucketManager(mac, config);
+    let privateBucketDomain = qiniuStorageBucketDomain;
+    let deadline = parseInt(Date.now() / 1000) + 3600; // 1小时过期
+    let privateDownloadUrl = bucketManager.privateDownloadUrl(privateBucketDomain, key, deadline);
+    return privateDownloadUrl;
+}
+
 function getVideoFromType(call, callback) {
     let type = call.request.type;
 
     if (type === "") {
         mongoVideoCollection.find({}).toArray().then((result) => {
             if (result === null) {
-                callback(null, {"info": []});
+                let array = [];
+
+                for (let i = 0; i < result.length; i++) {
+                    let key = result[i].key;
+                    let url = _getVideoUrl(key);
+
+                    array.push({
+                        "videoid": result[i]._id,
+                        "videoTitle": result[i].videoTitle,
+                        "videoType": result[i].videoType,
+                        "userid": result[i].userid,
+                        "url": url,
+                        "uploadTime": result[i].uploadTime,
+                    });
+                }
+
+                callback(null, { "info": array });
                 return;
             }
         });
     } else {
-        mongoVideoCollection.find({"type": type}).toArray().then((result) => {
+        mongoVideoCollection.find({ "type": type }).toArray().then((result) => {
             if (result === null) {
-                callback(null, {"info": []});
+                callback(null, { "info": [] });
                 return;
             }
         });
     }
+}
+
+function addVideoHistory(call, callback) {
+    let userid = call.request.userid;
+    let videoid = call.request.videoid;
+    let time = new Date().getTime();
+
+    mongoHistoryCollection.insertOne({
+        "userid": userid,
+        "videoid": videoid,
+        "watch_time": time,
+    }).then((result) => {
+        callback(null, { "ok": true });
+        return;
+    });
+}
+
+function addUserFavourite(call, callback) {
+    let userid = call.request.userid;
+    let videoid = call.request.videoid;
+    let time = new Date().getTime();
+
+    mongoFavouriteCollection.insertOne({
+        "userid": userid,
+        "videoid": videoid,
+        "favourite_time": time,
+    }).then((result) => {
+        callback(null, { "ok": true });
+        return;
+    });
+}
+
+function addUserLike(call, callback) {
+    let userid = call.request.userid;
+    let videoid = call.request.videoid;
+    let time = new Date().getTime();
+
+    mongoLikeCollection.insertOne({
+        "userid": userid,
+        "videoid": videoid,
+        "like_time": time,
+    }).then((result) => {
+        callback(null, { "ok": true });
+        return;
+    });
+}
+
+function addVideoComment(call, callback) {
+    let userid = call.request.userid;
+    let videoid = call.request.videoid;
+    let content = call.request.content;
+    let time = new Date().getTime();
+
+    mongoCommentCollection.insertOne({
+        "userid": userid,
+        "videoid": videoid,
+        "content": content,
+        "comment_time": time,
+    }).then((result) => {
+        callback(null, { "ok": true });
+        return;
+    });
+}
+
+function addVideoBullet(call, callback) {
+    let userid = call.request.userid;
+    let videoid = call.request.videoid;
+    let content = call.request.content;
+    let time = new Date().getTime();
+
+    mongoBulletCollection.insertOne({
+        "userid": userid,
+        "videoid": videoid,
+        "content": content,
+        "comment_time": time,
+    }).then((result) => {
+        callback(null, { "ok": true });
+        return;
+    });
+}
+
+function getUserFavourite(call, callback) {
+    let userid = call.request.userid;
+
+    mongoFavouriteCollection.find({"userid": userid}).toArray().then((result) => {
+        if(result === null) {
+            callback(null, {"videoid": []});
+            return;
+        }
+
+        let array = [];
+
+        for(let i = 0; i < result.length; i++) {
+            let videoid = result[i].videoid;
+            array.push(videoid);
+        }
+
+        callback(null, {"videoid": array});
+        return;
+    });
+}
+
+function getVideoFavourit(call, callback) {
+    let videoid = call.request.videoid;
+
+    mongoFavouriteCollection.find({"videoid": videoid}).toArray().then((result) => {
+        if(result === null) {
+            callback(null, {"userid": []});
+            return;
+        }
+
+        let array = [];
+
+        for(let i = 0; i < result.length; i++) {
+            let userid = result[i].userid;
+            array.push(userid);
+        }
+
+        callback(null, {"userid": array});
+        return;
+    });
+}
+
+function getUserLike(call, callback) {
+    let userid = call.request.userid;
+
+    mongoLikeCollection.find({"userid": userid}).toArray().then((result) => {
+        if(result === null) {
+            callback(null, {"videoid": []});
+            return;
+        }
+
+        let array = [];
+
+        for(let i = 0; i < result.length; i++) {
+            let videoid = result[i].videoid;
+            array.push(videoid);
+        }
+
+        callback(null, {"videoid": array});
+        return;
+    });
+}
+
+function getVideoLike(call, callback) {
+    let videoid = call.request.videoid;
+
+    mongoLikeCollection.find({"videoid": videoid}).toArray().then((result) => {
+        if(result === null) {
+            callback(null, {"userid": []});
+            return;
+        }
+
+        let array = [];
+
+        for(let i = 0; i < result.length; i++) {
+            let userid = result[i].userid;
+            array.push(userid);
+        }
+
+        callback(null, {"userid": array});
+        return;
+    });
+}
+
+function getVideoComment(call, callback) {
+    let videoid = call.request.videoid;
+
+    mongoCommentCollection.find({"videoid": videoid}).toArray().then((result) => {
+        if(result === null) {
+            callback(null, {"commentid": []});
+            return;
+        }
+
+        let array = [];
+
+        for(let i = 0; i < result.length; i++) {
+            let commentid = result[i]._id;
+            array.push(commentid);
+        }
+
+        callback(null, {"commentid": array});
+        return;
+    });
+}
+
+function getVideoBullet(call, callback) {
+    let videoid = call.request.videoid;
+
+    mongoBulletCollection.find({"videoid": videoid}).toArray().then((result) => {
+        if(result === null) {
+            callback(null, {"bulletid": []});
+            return;
+        }
+
+        let array = [];
+
+        for(let i = 0; i < result.length; i++) {
+            let bulletid = result[i]._id;
+            array.push(bulletid);
+        }
+
+        callback(null, {"bulletid": array});
+        return;
+    });
 }
 
 async function main() {
