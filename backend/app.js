@@ -88,6 +88,7 @@ function initGrpcServer() {
         getUserFavourite,
         getVideoFavourit,
         addUserLike,
+        getUserLike,
         addVideoComment,
         addVideoBullet,
     };
@@ -511,6 +512,27 @@ function getVideoFavourit(call, callback) {
         }
 
         callback(null, {"userid": array});
+        return;
+    });
+}
+
+function getUserLike(call, callback) {
+    let userid = call.request.userid;
+
+    mongoLikeCollection.find({"userid": userid}).toArray().then((result) => {
+        if(result === null) {
+            callback(null, {"videoid": []});
+            return;
+        }
+
+        let array = [];
+
+        for(let i = 0; i < result.length; i++) {
+            let videoid = result[i].videoid;
+            array.push(videoid);
+        }
+
+        callback(null, {"videoid": array});
         return;
     });
 }

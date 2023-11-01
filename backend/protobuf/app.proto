@@ -28,6 +28,7 @@ service Community {
     rpc GetUserFavourite (GetUserFavouriteRequest) returns (GetUserFavouriteResponse) {}
     rpc GetVideoFavourit (GetVideoFavouriteRequest) returns (GetVideoFavouriteResponse) {}
     rpc AddUserLike (AddUserLikeRequest) returns (EmptyResponse) {}
+    rpc GetUserLike (GetUserLikeRequest) returns (GetUserLikeResponse) {}
     rpc AddVideoComment (AddVideoCommentRequest) returns (EmptyResponse) {}
     rpc AddVideoBullet (AddVideoBulletRequest) returns (EmptyResponse) {}
 }
@@ -133,6 +134,14 @@ message GetVideoFavouriteResponse {
 message AddUserLikeRequest {
     string userid = 1;
     string videoid = 2;
+}
+
+message GetUserLikeRequest {
+    string userid = 1;
+}
+
+message GetUserLikeResponse {
+    repeated string videoid = 1;
 }
 
 message AddVideoCommentRequest {
