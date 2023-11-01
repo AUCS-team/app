@@ -15,12 +15,59 @@
 // @ts-nocheck
 
 
+goog.provide('proto.app.MetaClient');
+goog.provide('proto.app.MetaPromiseClient');
+goog.provide('proto.app.UserOperationClient');
+goog.provide('proto.app.UserOperationPromiseClient');
+goog.provide('proto.app.StorageClient');
+goog.provide('proto.app.StoragePromiseClient');
+goog.provide('proto.app.VideoClient');
+goog.provide('proto.app.VideoPromiseClient');
+goog.provide('proto.app.CommunityClient');
+goog.provide('proto.app.CommunityPromiseClient');
 
-const grpc = {};
-grpc.web = require('grpc-web');
+goog.require('grpc.web.MethodDescriptor');
+goog.require('grpc.web.MethodType');
+goog.require('grpc.web.GrpcWebClientBase');
+goog.require('grpc.web.AbstractClientBase');
+goog.require('grpc.web.ClientReadableStream');
+goog.require('grpc.web.RpcError');
+goog.require('proto.app.AddUserFavouriteRequest');
+goog.require('proto.app.AddUserLikeRequest');
+goog.require('proto.app.AddVideoBulletRequest');
+goog.require('proto.app.AddVideoCommentRequest');
+goog.require('proto.app.AddVideoHistoryRequest');
+goog.require('proto.app.EchoRequest');
+goog.require('proto.app.EchoResponse');
+goog.require('proto.app.EmptyResponse');
+goog.require('proto.app.GetUploadTokenRequest');
+goog.require('proto.app.GetUploadTokenResponse');
+goog.require('proto.app.GetUserFavouriteRequest');
+goog.require('proto.app.GetUserFavouriteResponse');
+goog.require('proto.app.GetUserInfoByIdRequest');
+goog.require('proto.app.GetUserInfoByUsernameRequest');
+goog.require('proto.app.GetUserInfoResponse');
+goog.require('proto.app.GetUserLikeRequest');
+goog.require('proto.app.GetUserLikeResponse');
+goog.require('proto.app.GetVideoBulletRequest');
+goog.require('proto.app.GetVideoBulletResponse');
+goog.require('proto.app.GetVideoCommentRequest');
+goog.require('proto.app.GetVideoCommentResponse');
+goog.require('proto.app.GetVideoFavouriteRequest');
+goog.require('proto.app.GetVideoFavouriteResponse');
+goog.require('proto.app.GetVideoFromTypeRequest');
+goog.require('proto.app.GetVideoFromTypeResponse');
+goog.require('proto.app.GetVideoLikeRequest');
+goog.require('proto.app.GetVideoLikeResponse');
+goog.require('proto.app.SignInRequest');
+goog.require('proto.app.SignResponse');
+goog.require('proto.app.SignUpRequest');
 
-const proto = {};
-proto.app = require('./app_pb.js');
+goog.requireType('grpc.web.ClientOptions');
+
+
+
+goog.scope(function() {
 
 /**
  * @param {string} hostname
@@ -1380,5 +1427,5 @@ proto.app.CommunityPromiseClient.prototype.getVideoBullet =
 };
 
 
-module.exports = proto.app;
+}); // goog.scope
 
