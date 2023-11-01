@@ -31,6 +31,7 @@ service Community {
     rpc GetUserLike (GetUserLikeRequest) returns (GetUserLikeResponse) {}
     rpc GetVideoLike (GetVideoLikeRequest) returns (GetVideoLikeResponse) {}
     rpc AddVideoComment (AddVideoCommentRequest) returns (EmptyResponse) {}
+    rpc GetVideoComment (GetVideoCommentRequest) returns (GetVideoCommentResponse) {}
     rpc AddVideoBullet (AddVideoBulletRequest) returns (EmptyResponse) {}
 }
 
@@ -157,6 +158,14 @@ message AddVideoCommentRequest {
     string userid = 1;
     string videoid = 2;
     string content = 3;
+}
+
+message GetVideoCommentRequest {
+    string videoid = 1;
+}
+
+message GetVideoCommentResponse {
+    repeated string commentid = 1;
 }
 
 message AddVideoBulletRequest {
