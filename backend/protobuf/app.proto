@@ -25,6 +25,7 @@ service Video {
 
 service Community {
     rpc AddUserFavourite (AddUserFavouriteRequest) returns (EmptyResponse) {}
+    rpc GetUserFavourite (GetUserFavouriteRequest) returns (GetUserFavouriteResponse) {}
     rpc AddUserLike (AddUserLikeRequest) returns (EmptyResponse) {}
     rpc AddVideoComment (AddVideoCommentRequest) returns (EmptyResponse) {}
     rpc AddVideoBullet (AddVideoBulletRequest) returns (EmptyResponse) {}
@@ -110,6 +111,14 @@ message AddVideoHistoryRequest {
 message AddUserFavouriteRequest {
     string userid = 1;
     string videoid = 2;
+}
+
+message GetUserFavouriteRequest {
+    string userid = 1;
+}
+
+message GetUserFavouriteResponse {
+    string videoid = 1;
 }
 
 message AddUserLikeRequest {

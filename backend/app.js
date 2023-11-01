@@ -85,6 +85,7 @@ function initGrpcServer() {
 
     let communityImplementation = {
         addUserFavourite,
+        getUserFavourite,
         addUserLike,
         addVideoComment,
         addVideoBullet,
@@ -467,6 +468,27 @@ function addVideoBullet(call, callback) {
         "comment_time": time,
     }).then((result) => {
         callback(null, { "ok": true });
+        return;
+    });
+}
+
+function getUserFavourite(call, callback) {
+    let userid = call.request.userid;
+
+    mongoFavouriteCollection.find({"userid": userid}).toArray().then((result) => {
+        if(result === null) {
+            callback(null, {"videoid": []});
+            return;
+        }
+
+        let array = [];
+
+        for(let i = 0; i < result.length; i++) {
+            let videoid = result[i].videoid;
+            array.push(videoid);
+        }
+
+        callback(null, {"videoid": array});
         return;
     });
 }
