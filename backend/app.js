@@ -63,7 +63,6 @@ function initGrpcServer() {
         signIn,
         getUserInfoById,
         getUserInfoByUsername,
-        addUserFavourite,
     };
 
     let storageImplementation = {
@@ -73,12 +72,17 @@ function initGrpcServer() {
     let videoImplementation = {
         getVideoFromType,
         addVideoHistory,
-    }
+    };
+
+    let communityImplementation = {
+        addUserFavourite,
+    };
 
     server.addService(appProto.Meta.service, metaImplementation);
     server.addService(appProto.UserOperation.service, userOperationImplementation);
     server.addService(appProto.Storage.service, storageImplementation);
     server.addService(appProto.Video.service, videoImplementation);
+    server.addService(appProto.Community.service, communityImplementation);
     server.bindAsync(grpcUrl, grpc.ServerCredentials.createInsecure(), () => {
         server.start();
     });

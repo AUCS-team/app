@@ -12,8 +12,6 @@ service UserOperation {
 
     rpc GetUserInfoById (GetUserInfoByIdRequest) returns (GetUserInfoResponse) {}
     rpc GetUserInfoByUsername (GetUserInfoByUsernameRequest) returns (GetUserInfoResponse) {}
-
-    rpc AddUserFavourite (AddUserFavouriteRequest) returns (EmptyResponse) {}
 }
 
 service Storage {
@@ -23,6 +21,10 @@ service Storage {
 service Video {
     rpc GetVideoFromType (GetVideoFromTypeRequest) returns (GetVideoFromTypeResponse) {}
     rpc AddVideoHistory (AddVideoHistoryRequest) returns (EmptyResponse) {}
+}
+
+service Community {
+    rpc AddUserFavourite (AddUserFavouriteRequest) returns (EmptyResponse) {}
 }
 
 message EchoRequest {
