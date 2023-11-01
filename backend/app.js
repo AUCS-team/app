@@ -93,6 +93,7 @@ function initGrpcServer() {
         addVideoComment,
         getVideoComment,
         addVideoBullet,
+        getVideoBullet,
     };
 
     server.addService(appProto.Meta.service, metaImplementation);
@@ -577,6 +578,27 @@ function getVideoComment(call, callback) {
         }
 
         callback(null, {"commentid": array});
+        return;
+    });
+}
+
+function getVideoBullet(call, callback) {
+    let videoid = call.request.videoid;
+
+    mongoBulletCollection.find({"videoid": videoid}).toArray().then((result) => {
+        if(result === null) {
+            callback(null, {"bulletid": []});
+            return;
+        }
+
+        let array = [];
+
+        for(let i = 0; i < result.length; i++) {
+            let bulletid = result[i]._id;
+            array.push(bulletid);
+        }
+
+        callback(null, {"bulletid": array});
         return;
     });
 }

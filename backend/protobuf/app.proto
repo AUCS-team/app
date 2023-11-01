@@ -33,6 +33,7 @@ service Community {
     rpc AddVideoComment (AddVideoCommentRequest) returns (EmptyResponse) {}
     rpc GetVideoComment (GetVideoCommentRequest) returns (GetVideoCommentResponse) {}
     rpc AddVideoBullet (AddVideoBulletRequest) returns (EmptyResponse) {}
+    rpc GetVideoBullet (GetVideoBulletRequest) returns (GetVideoBulletResponse) {}
 }
 
 message EchoRequest {
@@ -172,4 +173,12 @@ message AddVideoBulletRequest {
     string userid = 1;
     string videoid = 2;
     string content = 3;
+}
+
+message GetVideoBulletRequest {
+    string videoid = 1;
+}
+
+message GetVideoBulletResponse {
+    repeated string bulletid = 1;
 }
