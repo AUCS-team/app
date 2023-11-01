@@ -657,5 +657,728 @@ proto.app.VideoPromiseClient.prototype.getVideoFromType =
 };
 
 
+/**
+ * @const
+ * @type {!grpc.web.MethodDescriptor<
+ *   !proto.app.AddVideoHistoryRequest,
+ *   !proto.app.EmptyResponse>}
+ */
+const methodDescriptor_Video_AddVideoHistory = new grpc.web.MethodDescriptor(
+  '/app.Video/AddVideoHistory',
+  grpc.web.MethodType.UNARY,
+  proto.app.AddVideoHistoryRequest,
+  proto.app.EmptyResponse,
+  /**
+   * @param {!proto.app.AddVideoHistoryRequest} request
+   * @return {!Uint8Array}
+   */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.app.EmptyResponse.deserializeBinary
+);
+
+
+/**
+ * @param {!proto.app.AddVideoHistoryRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @param {function(?grpc.web.RpcError, ?proto.app.EmptyResponse)}
+ *     callback The callback function(error, response)
+ * @return {!grpc.web.ClientReadableStream<!proto.app.EmptyResponse>|undefined}
+ *     The XHR Node Readable Stream
+ */
+proto.app.VideoClient.prototype.addVideoHistory =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/app.Video/AddVideoHistory',
+      request,
+      metadata || {},
+      methodDescriptor_Video_AddVideoHistory,
+      callback);
+};
+
+
+/**
+ * @param {!proto.app.AddVideoHistoryRequest} request The
+ *     request proto
+ * @param {?Object<string, string>=} metadata User defined
+ *     call metadata
+ * @return {!Promise<!proto.app.EmptyResponse>}
+ *     Promise that resolves to the response
+ */
+proto.app.VideoPromiseClient.prototype.addVideoHistory =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/app.Video/AddVideoHistory',
+      request,
+      metadata || {},
+      methodDescriptor_Video_AddVideoHistory);
+};
+
+
+/**
+ * @param {string} hostname
+ * @param {?Object} credentials
+ * @param {?grpc.web.ClientOptions} options
+ * @constructor
+ * @struct
+ * @final
+ */
+proto.app.CommunityClient =
+    function(hostname, credentials, options) {
+  if (!options) options = {};
+  options.format = 'text';
+
+  /**
+   * @private @const {!grpc.web.GrpcWebClientBase} The client
+   */
+  this.client_ = new grpc.web.GrpcWebClientBase(options);
+
+  /**
+   * @private @const {string} The hostname
+   */
+  this.hostname_ = hostname.replace(/\/+$/, '');
+
+};
+
+
+/**
+ * @param {string} hostname
+ * @param {?Object} credentials
+ * @param {?grpc.web.ClientOptions} options
+ * @constructor
+ * @struct
+ * @final
+ */
+proto.app.CommunityPromiseClient =
+    function(hostname, credentials, options) {
+  if (!options) options = {};
+  options.format = 'text';
+
+  /**
+   * @private @const {!grpc.web.GrpcWebClientBase} The client
+   */
+  this.client_ = new grpc.web.GrpcWebClientBase(options);
+
+  /**
+   * @private @const {string} The hostname
+   */
+  this.hostname_ = hostname.replace(/\/+$/, '');
+
+};
+
+
+/**
+ * @const
+ * @type {!grpc.web.MethodDescriptor<
+ *   !proto.app.AddUserFavouriteRequest,
+ *   !proto.app.EmptyResponse>}
+ */
+const methodDescriptor_Community_AddUserFavourite = new grpc.web.MethodDescriptor(
+  '/app.Community/AddUserFavourite',
+  grpc.web.MethodType.UNARY,
+  proto.app.AddUserFavouriteRequest,
+  proto.app.EmptyResponse,
+  /**
+   * @param {!proto.app.AddUserFavouriteRequest} request
+   * @return {!Uint8Array}
+   */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.app.EmptyResponse.deserializeBinary
+);
+
+
+/**
+ * @param {!proto.app.AddUserFavouriteRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @param {function(?grpc.web.RpcError, ?proto.app.EmptyResponse)}
+ *     callback The callback function(error, response)
+ * @return {!grpc.web.ClientReadableStream<!proto.app.EmptyResponse>|undefined}
+ *     The XHR Node Readable Stream
+ */
+proto.app.CommunityClient.prototype.addUserFavourite =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/app.Community/AddUserFavourite',
+      request,
+      metadata || {},
+      methodDescriptor_Community_AddUserFavourite,
+      callback);
+};
+
+
+/**
+ * @param {!proto.app.AddUserFavouriteRequest} request The
+ *     request proto
+ * @param {?Object<string, string>=} metadata User defined
+ *     call metadata
+ * @return {!Promise<!proto.app.EmptyResponse>}
+ *     Promise that resolves to the response
+ */
+proto.app.CommunityPromiseClient.prototype.addUserFavourite =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/app.Community/AddUserFavourite',
+      request,
+      metadata || {},
+      methodDescriptor_Community_AddUserFavourite);
+};
+
+
+/**
+ * @const
+ * @type {!grpc.web.MethodDescriptor<
+ *   !proto.app.GetUserFavouriteRequest,
+ *   !proto.app.GetUserFavouriteResponse>}
+ */
+const methodDescriptor_Community_GetUserFavourite = new grpc.web.MethodDescriptor(
+  '/app.Community/GetUserFavourite',
+  grpc.web.MethodType.UNARY,
+  proto.app.GetUserFavouriteRequest,
+  proto.app.GetUserFavouriteResponse,
+  /**
+   * @param {!proto.app.GetUserFavouriteRequest} request
+   * @return {!Uint8Array}
+   */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.app.GetUserFavouriteResponse.deserializeBinary
+);
+
+
+/**
+ * @param {!proto.app.GetUserFavouriteRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @param {function(?grpc.web.RpcError, ?proto.app.GetUserFavouriteResponse)}
+ *     callback The callback function(error, response)
+ * @return {!grpc.web.ClientReadableStream<!proto.app.GetUserFavouriteResponse>|undefined}
+ *     The XHR Node Readable Stream
+ */
+proto.app.CommunityClient.prototype.getUserFavourite =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/app.Community/GetUserFavourite',
+      request,
+      metadata || {},
+      methodDescriptor_Community_GetUserFavourite,
+      callback);
+};
+
+
+/**
+ * @param {!proto.app.GetUserFavouriteRequest} request The
+ *     request proto
+ * @param {?Object<string, string>=} metadata User defined
+ *     call metadata
+ * @return {!Promise<!proto.app.GetUserFavouriteResponse>}
+ *     Promise that resolves to the response
+ */
+proto.app.CommunityPromiseClient.prototype.getUserFavourite =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/app.Community/GetUserFavourite',
+      request,
+      metadata || {},
+      methodDescriptor_Community_GetUserFavourite);
+};
+
+
+/**
+ * @const
+ * @type {!grpc.web.MethodDescriptor<
+ *   !proto.app.GetVideoFavouriteRequest,
+ *   !proto.app.GetVideoFavouriteResponse>}
+ */
+const methodDescriptor_Community_GetVideoFavourit = new grpc.web.MethodDescriptor(
+  '/app.Community/GetVideoFavourit',
+  grpc.web.MethodType.UNARY,
+  proto.app.GetVideoFavouriteRequest,
+  proto.app.GetVideoFavouriteResponse,
+  /**
+   * @param {!proto.app.GetVideoFavouriteRequest} request
+   * @return {!Uint8Array}
+   */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.app.GetVideoFavouriteResponse.deserializeBinary
+);
+
+
+/**
+ * @param {!proto.app.GetVideoFavouriteRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @param {function(?grpc.web.RpcError, ?proto.app.GetVideoFavouriteResponse)}
+ *     callback The callback function(error, response)
+ * @return {!grpc.web.ClientReadableStream<!proto.app.GetVideoFavouriteResponse>|undefined}
+ *     The XHR Node Readable Stream
+ */
+proto.app.CommunityClient.prototype.getVideoFavourit =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/app.Community/GetVideoFavourit',
+      request,
+      metadata || {},
+      methodDescriptor_Community_GetVideoFavourit,
+      callback);
+};
+
+
+/**
+ * @param {!proto.app.GetVideoFavouriteRequest} request The
+ *     request proto
+ * @param {?Object<string, string>=} metadata User defined
+ *     call metadata
+ * @return {!Promise<!proto.app.GetVideoFavouriteResponse>}
+ *     Promise that resolves to the response
+ */
+proto.app.CommunityPromiseClient.prototype.getVideoFavourit =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/app.Community/GetVideoFavourit',
+      request,
+      metadata || {},
+      methodDescriptor_Community_GetVideoFavourit);
+};
+
+
+/**
+ * @const
+ * @type {!grpc.web.MethodDescriptor<
+ *   !proto.app.AddUserLikeRequest,
+ *   !proto.app.EmptyResponse>}
+ */
+const methodDescriptor_Community_AddUserLike = new grpc.web.MethodDescriptor(
+  '/app.Community/AddUserLike',
+  grpc.web.MethodType.UNARY,
+  proto.app.AddUserLikeRequest,
+  proto.app.EmptyResponse,
+  /**
+   * @param {!proto.app.AddUserLikeRequest} request
+   * @return {!Uint8Array}
+   */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.app.EmptyResponse.deserializeBinary
+);
+
+
+/**
+ * @param {!proto.app.AddUserLikeRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @param {function(?grpc.web.RpcError, ?proto.app.EmptyResponse)}
+ *     callback The callback function(error, response)
+ * @return {!grpc.web.ClientReadableStream<!proto.app.EmptyResponse>|undefined}
+ *     The XHR Node Readable Stream
+ */
+proto.app.CommunityClient.prototype.addUserLike =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/app.Community/AddUserLike',
+      request,
+      metadata || {},
+      methodDescriptor_Community_AddUserLike,
+      callback);
+};
+
+
+/**
+ * @param {!proto.app.AddUserLikeRequest} request The
+ *     request proto
+ * @param {?Object<string, string>=} metadata User defined
+ *     call metadata
+ * @return {!Promise<!proto.app.EmptyResponse>}
+ *     Promise that resolves to the response
+ */
+proto.app.CommunityPromiseClient.prototype.addUserLike =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/app.Community/AddUserLike',
+      request,
+      metadata || {},
+      methodDescriptor_Community_AddUserLike);
+};
+
+
+/**
+ * @const
+ * @type {!grpc.web.MethodDescriptor<
+ *   !proto.app.GetUserLikeRequest,
+ *   !proto.app.GetUserLikeResponse>}
+ */
+const methodDescriptor_Community_GetUserLike = new grpc.web.MethodDescriptor(
+  '/app.Community/GetUserLike',
+  grpc.web.MethodType.UNARY,
+  proto.app.GetUserLikeRequest,
+  proto.app.GetUserLikeResponse,
+  /**
+   * @param {!proto.app.GetUserLikeRequest} request
+   * @return {!Uint8Array}
+   */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.app.GetUserLikeResponse.deserializeBinary
+);
+
+
+/**
+ * @param {!proto.app.GetUserLikeRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @param {function(?grpc.web.RpcError, ?proto.app.GetUserLikeResponse)}
+ *     callback The callback function(error, response)
+ * @return {!grpc.web.ClientReadableStream<!proto.app.GetUserLikeResponse>|undefined}
+ *     The XHR Node Readable Stream
+ */
+proto.app.CommunityClient.prototype.getUserLike =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/app.Community/GetUserLike',
+      request,
+      metadata || {},
+      methodDescriptor_Community_GetUserLike,
+      callback);
+};
+
+
+/**
+ * @param {!proto.app.GetUserLikeRequest} request The
+ *     request proto
+ * @param {?Object<string, string>=} metadata User defined
+ *     call metadata
+ * @return {!Promise<!proto.app.GetUserLikeResponse>}
+ *     Promise that resolves to the response
+ */
+proto.app.CommunityPromiseClient.prototype.getUserLike =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/app.Community/GetUserLike',
+      request,
+      metadata || {},
+      methodDescriptor_Community_GetUserLike);
+};
+
+
+/**
+ * @const
+ * @type {!grpc.web.MethodDescriptor<
+ *   !proto.app.GetVideoLikeRequest,
+ *   !proto.app.GetVideoLikeResponse>}
+ */
+const methodDescriptor_Community_GetVideoLike = new grpc.web.MethodDescriptor(
+  '/app.Community/GetVideoLike',
+  grpc.web.MethodType.UNARY,
+  proto.app.GetVideoLikeRequest,
+  proto.app.GetVideoLikeResponse,
+  /**
+   * @param {!proto.app.GetVideoLikeRequest} request
+   * @return {!Uint8Array}
+   */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.app.GetVideoLikeResponse.deserializeBinary
+);
+
+
+/**
+ * @param {!proto.app.GetVideoLikeRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @param {function(?grpc.web.RpcError, ?proto.app.GetVideoLikeResponse)}
+ *     callback The callback function(error, response)
+ * @return {!grpc.web.ClientReadableStream<!proto.app.GetVideoLikeResponse>|undefined}
+ *     The XHR Node Readable Stream
+ */
+proto.app.CommunityClient.prototype.getVideoLike =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/app.Community/GetVideoLike',
+      request,
+      metadata || {},
+      methodDescriptor_Community_GetVideoLike,
+      callback);
+};
+
+
+/**
+ * @param {!proto.app.GetVideoLikeRequest} request The
+ *     request proto
+ * @param {?Object<string, string>=} metadata User defined
+ *     call metadata
+ * @return {!Promise<!proto.app.GetVideoLikeResponse>}
+ *     Promise that resolves to the response
+ */
+proto.app.CommunityPromiseClient.prototype.getVideoLike =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/app.Community/GetVideoLike',
+      request,
+      metadata || {},
+      methodDescriptor_Community_GetVideoLike);
+};
+
+
+/**
+ * @const
+ * @type {!grpc.web.MethodDescriptor<
+ *   !proto.app.AddVideoCommentRequest,
+ *   !proto.app.EmptyResponse>}
+ */
+const methodDescriptor_Community_AddVideoComment = new grpc.web.MethodDescriptor(
+  '/app.Community/AddVideoComment',
+  grpc.web.MethodType.UNARY,
+  proto.app.AddVideoCommentRequest,
+  proto.app.EmptyResponse,
+  /**
+   * @param {!proto.app.AddVideoCommentRequest} request
+   * @return {!Uint8Array}
+   */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.app.EmptyResponse.deserializeBinary
+);
+
+
+/**
+ * @param {!proto.app.AddVideoCommentRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @param {function(?grpc.web.RpcError, ?proto.app.EmptyResponse)}
+ *     callback The callback function(error, response)
+ * @return {!grpc.web.ClientReadableStream<!proto.app.EmptyResponse>|undefined}
+ *     The XHR Node Readable Stream
+ */
+proto.app.CommunityClient.prototype.addVideoComment =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/app.Community/AddVideoComment',
+      request,
+      metadata || {},
+      methodDescriptor_Community_AddVideoComment,
+      callback);
+};
+
+
+/**
+ * @param {!proto.app.AddVideoCommentRequest} request The
+ *     request proto
+ * @param {?Object<string, string>=} metadata User defined
+ *     call metadata
+ * @return {!Promise<!proto.app.EmptyResponse>}
+ *     Promise that resolves to the response
+ */
+proto.app.CommunityPromiseClient.prototype.addVideoComment =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/app.Community/AddVideoComment',
+      request,
+      metadata || {},
+      methodDescriptor_Community_AddVideoComment);
+};
+
+
+/**
+ * @const
+ * @type {!grpc.web.MethodDescriptor<
+ *   !proto.app.GetVideoCommentRequest,
+ *   !proto.app.GetVideoCommentResponse>}
+ */
+const methodDescriptor_Community_GetVideoComment = new grpc.web.MethodDescriptor(
+  '/app.Community/GetVideoComment',
+  grpc.web.MethodType.UNARY,
+  proto.app.GetVideoCommentRequest,
+  proto.app.GetVideoCommentResponse,
+  /**
+   * @param {!proto.app.GetVideoCommentRequest} request
+   * @return {!Uint8Array}
+   */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.app.GetVideoCommentResponse.deserializeBinary
+);
+
+
+/**
+ * @param {!proto.app.GetVideoCommentRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @param {function(?grpc.web.RpcError, ?proto.app.GetVideoCommentResponse)}
+ *     callback The callback function(error, response)
+ * @return {!grpc.web.ClientReadableStream<!proto.app.GetVideoCommentResponse>|undefined}
+ *     The XHR Node Readable Stream
+ */
+proto.app.CommunityClient.prototype.getVideoComment =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/app.Community/GetVideoComment',
+      request,
+      metadata || {},
+      methodDescriptor_Community_GetVideoComment,
+      callback);
+};
+
+
+/**
+ * @param {!proto.app.GetVideoCommentRequest} request The
+ *     request proto
+ * @param {?Object<string, string>=} metadata User defined
+ *     call metadata
+ * @return {!Promise<!proto.app.GetVideoCommentResponse>}
+ *     Promise that resolves to the response
+ */
+proto.app.CommunityPromiseClient.prototype.getVideoComment =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/app.Community/GetVideoComment',
+      request,
+      metadata || {},
+      methodDescriptor_Community_GetVideoComment);
+};
+
+
+/**
+ * @const
+ * @type {!grpc.web.MethodDescriptor<
+ *   !proto.app.AddVideoBulletRequest,
+ *   !proto.app.EmptyResponse>}
+ */
+const methodDescriptor_Community_AddVideoBullet = new grpc.web.MethodDescriptor(
+  '/app.Community/AddVideoBullet',
+  grpc.web.MethodType.UNARY,
+  proto.app.AddVideoBulletRequest,
+  proto.app.EmptyResponse,
+  /**
+   * @param {!proto.app.AddVideoBulletRequest} request
+   * @return {!Uint8Array}
+   */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.app.EmptyResponse.deserializeBinary
+);
+
+
+/**
+ * @param {!proto.app.AddVideoBulletRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @param {function(?grpc.web.RpcError, ?proto.app.EmptyResponse)}
+ *     callback The callback function(error, response)
+ * @return {!grpc.web.ClientReadableStream<!proto.app.EmptyResponse>|undefined}
+ *     The XHR Node Readable Stream
+ */
+proto.app.CommunityClient.prototype.addVideoBullet =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/app.Community/AddVideoBullet',
+      request,
+      metadata || {},
+      methodDescriptor_Community_AddVideoBullet,
+      callback);
+};
+
+
+/**
+ * @param {!proto.app.AddVideoBulletRequest} request The
+ *     request proto
+ * @param {?Object<string, string>=} metadata User defined
+ *     call metadata
+ * @return {!Promise<!proto.app.EmptyResponse>}
+ *     Promise that resolves to the response
+ */
+proto.app.CommunityPromiseClient.prototype.addVideoBullet =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/app.Community/AddVideoBullet',
+      request,
+      metadata || {},
+      methodDescriptor_Community_AddVideoBullet);
+};
+
+
+/**
+ * @const
+ * @type {!grpc.web.MethodDescriptor<
+ *   !proto.app.GetVideoBulletRequest,
+ *   !proto.app.GetVideoBulletResponse>}
+ */
+const methodDescriptor_Community_GetVideoBullet = new grpc.web.MethodDescriptor(
+  '/app.Community/GetVideoBullet',
+  grpc.web.MethodType.UNARY,
+  proto.app.GetVideoBulletRequest,
+  proto.app.GetVideoBulletResponse,
+  /**
+   * @param {!proto.app.GetVideoBulletRequest} request
+   * @return {!Uint8Array}
+   */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.app.GetVideoBulletResponse.deserializeBinary
+);
+
+
+/**
+ * @param {!proto.app.GetVideoBulletRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @param {function(?grpc.web.RpcError, ?proto.app.GetVideoBulletResponse)}
+ *     callback The callback function(error, response)
+ * @return {!grpc.web.ClientReadableStream<!proto.app.GetVideoBulletResponse>|undefined}
+ *     The XHR Node Readable Stream
+ */
+proto.app.CommunityClient.prototype.getVideoBullet =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/app.Community/GetVideoBullet',
+      request,
+      metadata || {},
+      methodDescriptor_Community_GetVideoBullet,
+      callback);
+};
+
+
+/**
+ * @param {!proto.app.GetVideoBulletRequest} request The
+ *     request proto
+ * @param {?Object<string, string>=} metadata User defined
+ *     call metadata
+ * @return {!Promise<!proto.app.GetVideoBulletResponse>}
+ *     Promise that resolves to the response
+ */
+proto.app.CommunityPromiseClient.prototype.getVideoBullet =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/app.Community/GetVideoBullet',
+      request,
+      metadata || {},
+      methodDescriptor_Community_GetVideoBullet);
+};
+
+
 module.exports = proto.app;
 
