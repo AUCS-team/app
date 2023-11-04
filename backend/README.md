@@ -1,6 +1,31 @@
-### Docker Install
-Change directory to current folder.
+# TSRPC Server
+
+## Usage
+### Local dev server
+
+Dev server would restart automatically when code changed.
+
 ```
-docker build . -t cialloo/app
-docker run -itd --name app -p 8080:8080 cialloo/app
+npm run dev
 ```
+
+### Build
+```
+npm run build
+```
+
+### Generate API document
+
+Generate API document in swagger/openapi and markdown format.
+
+```shell
+npm run doc
+```
+
+### Run unit Test
+Execute `npm run dev` first, then execute:
+```
+npm run test
+```
+
+---
