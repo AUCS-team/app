@@ -6,10 +6,10 @@ import { useEffect } from "react";
 
 const onFinish = async (value:any)=>{
  let res =  await Client.callApi("AddUser",{username:value.username,password:value.password})
- console.log(res);
- 
- localStorage.setItem("token",res.res.token)
- location.reload();
+ if(res.res?.username){
+  localStorage.setItem("username",res.res?.username)
+  location.reload();
+ }
 }
 
 

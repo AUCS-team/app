@@ -1,15 +1,15 @@
 import { ApiCall } from "tsrpc";
 import { ReqGetUser, ResGetUser } from "../shared/protocols/PtlGetUser";
 
-import { users } from "./ApiAddUser";
+import { users } from "../DB";
 import { log } from "console";
 
 export default async function (call: ApiCall<ReqGetUser, ResGetUser>) {
     // TODO
-    const token = call.req.token
-    log(users,token)
-    if (token in users){
-        call.succ({username:token})
+    const username = call.req.username
+    log(users,username)
+    if (username in users){
+        call.succ({username:username})
     }
-    call.error("你还尚未注册")
+    call.error("匿名用户")
 }

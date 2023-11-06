@@ -5,7 +5,7 @@
  * 获取数据
  */
 export interface ReqGetUser {
-    token:string
+    username:string
 
 }
 

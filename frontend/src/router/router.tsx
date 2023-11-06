@@ -12,12 +12,12 @@ const router = createBrowserRouter([
         path:"/",
         element:<App></App>,
         loader:async function getname() {
-            const token = localStorage.getItem("token")
-            if (!token){
+            const username = localStorage.getItem("username")
+            if (!username){
                 console.log("未登录");
                 return "123"
             }
-            return await Client.callApi("GetUser",{token})
+            return await Client.callApi("GetUser",{username})
         },
         children:[
             {
@@ -29,8 +29,18 @@ const router = createBrowserRouter([
                 element:<Login></Login>
             },
             {
-                path:"/video/:id",
-                element:<Play></Play>
+                path:"/video/:videoName",
+                element:<Play></Play>,
+                loader:async function init({params}) {
+                    
+                        const res = await Client.callApi("GetComment",{videoName:params.videoName as string})
+                        const res2 = await Client.callApi("GetTopic",{videoName:params.videoName as string})
+                        const comments = res.res?.comments
+                        const topics = res2.res?.topics
+                        return {comments,topics}
+                    
+                    
+                }
             },
             {
                 path:"/upload",

@@ -5,13 +5,13 @@
  * 增加数据
  * 此处的注释将会自动附带到生成的 API 文档中
  */
-export interface ReqAddUser {
+export interface ReqAddTopic {
     /** 要增加的消息内容 */
-    username:string
-    password:string
+    videoName:string
+    topic:string
 }
 
-export interface ResAddUser {
+export interface ResAddTopic {
     /** 服务端内容创建时间 */
-    username: string
+    issuccess: boolean
 }
