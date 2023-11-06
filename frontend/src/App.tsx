@@ -3,7 +3,7 @@ import { Button, Col, Menu, Row, Upload } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 
 import { Outlet, useLoaderData } from "react-router";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 
 
@@ -14,15 +14,15 @@ const onClick = ()=>{
 
 const items = [
   {
-    label:"视频分类",
+    label:"热门视频",
     key:1
   },
   {
-    label:"视频分类",
+    label:"精选视频",
     key:2
   },
   {
-    label:"视频分类",
+    label:"自选视频",
     key:3
   },
   {
@@ -41,21 +41,21 @@ function App() {
     <Layout className="min-h-screen">
       <Header className="bg-white shadow">
         <Row>
-          <Col>
-          logo
+          <Col span={1}>
+          <NavLink to={"/"}>logo</NavLink>
           </Col>
-          <Col>
+          <Col span={10}>
           <Menu items={items} mode="horizontal"></Menu>
           </Col>
-          <Col>
+          <Col span={4}>
           
           <Button icon={<UploadOutlined />}><Link to={"/upload"}>Click to up load</Link></Button>
           
           </Col>
-          <Col>
+          <Col offset={3} span={2}>
           <Button><Link to={"/login"}>{username?username:"登录"}</Link></Button>
           </Col>
-          <Col>
+          <Col span={3}>
           <Button onClick={onClick}>登出</Button>
           </Col>
         </Row>

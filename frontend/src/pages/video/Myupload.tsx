@@ -49,8 +49,13 @@ const MyUpload = () => {
       setFileList(newFileList);
     },
     beforeUpload: (file) => {
+      
+      if (file.type !== "video/mp4"){
+        message.error("仅支持MP4");
+        return Upload.LIST_IGNORE
+      }
       setFileList([file,...fileList]);
-
+      console.log(file.size);
       return false;
     },
     fileList,

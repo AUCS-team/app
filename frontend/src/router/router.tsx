@@ -4,6 +4,7 @@ import Login from "../pages/user/login.tsx";
 import { Client } from "../client.ts";
 import Upload from "../pages/video/Myupload.tsx";
 import Play from "../pages/video/play.tsx";
+import Index from "../pages/index.tsx";
 
 
 const router = createBrowserRouter([
@@ -20,11 +21,15 @@ const router = createBrowserRouter([
         },
         children:[
             {
+                path:"/",
+                element:<Index></Index>
+            },
+            {
                 path:"/login",
                 element:<Login></Login>
             },
             {
-                path:"/video",
+                path:"/video/:id",
                 element:<Play></Play>
             },
             {
