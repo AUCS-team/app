@@ -8,7 +8,7 @@ import { Link, NavLink } from "react-router-dom";
 
 
 const onClick = ()=>{
-  localStorage.removeItem("token")
+  localStorage.removeItem("username")
 }
 
 

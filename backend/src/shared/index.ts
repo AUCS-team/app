@@ -1,5 +1,6 @@
-import {auth,rs} from 'qiniu'
+import {auth,rs,util} from 'qiniu'
 
+const safeurl=util.base64ToUrlSafe("race:123.m3u8")
 let options:rs.PutPolicyOptions = {
     scope: "race",
   };

@@ -1,4 +1,4 @@
-
+export let videoNames:{[property:string]:string[]} = {hot:[],high:[],costom:[]}
 //以视频标题作为key，值为评论，话题，弹幕集合
 export let comments:{[property:string]:string[]} = {}
 export let Topics:{[property:string]:string[]} = {}

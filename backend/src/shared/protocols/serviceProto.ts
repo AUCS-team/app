@@ -2,10 +2,12 @@ import { ServiceProto } from 'tsrpc-proto';
 import { ReqAddComment, ResAddComment } from './PtlAddComment';
 import { ReqAddTopic, ResAddTopic } from './PtlAddTopic';
 import { ReqAddUser, ResAddUser } from './PtlAddUser';
+import { ReqAddVideoName, ResAddVideoName } from './PtlAddVideoName';
 import { ReqGetComment, ResGetComment } from './PtlGetComment';
 import { ReqGetToken, ResGetToken } from './PtlGetToken';
 import { ReqGetTopic, ResGetTopic } from './PtlGetTopic';
 import { ReqGetUser, ResGetUser } from './PtlGetUser';
+import { ReqGetVideoName, ResGetVideoName } from './PtlGetVideoName';
 
 export interface ServiceType {
     api: {
@@ -20,6 +22,10 @@ export interface ServiceType {
         "AddUser": {
             req: ReqAddUser,
             res: ResAddUser
+        },
+        "AddVideoName": {
+            req: ReqAddVideoName,
+            res: ResAddVideoName
         },
         "GetComment": {
             req: ReqGetComment,
@@ -36,6 +42,10 @@ export interface ServiceType {
         "GetUser": {
             req: ReqGetUser,
             res: ResGetUser
+        },
+        "GetVideoName": {
+            req: ReqGetVideoName,
+            res: ResGetVideoName
         }
     },
     msg: {
@@ -44,7 +54,7 @@ export interface ServiceType {
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
-    "version": 5,
+    "version": 6,
     "services": [
         {
             "id": 5,
@@ -59,6 +69,11 @@ export const serviceProto: ServiceProto<ServiceType> = {
         {
             "id": 2,
             "name": "AddUser",
+            "type": "api"
+        },
+        {
+            "id": 9,
+            "name": "AddVideoName",
             "type": "api"
         },
         {
@@ -79,6 +94,11 @@ export const serviceProto: ServiceProto<ServiceType> = {
         {
             "id": 3,
             "name": "GetUser",
+            "type": "api"
+        },
+        {
+            "id": 10,
+            "name": "GetVideoName",
             "type": "api"
         }
     ],
@@ -172,6 +192,37 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     "name": "username",
                     "type": {
                         "type": "String"
+                    }
+                }
+            ]
+        },
+        "PtlAddVideoName/ReqAddVideoName": {
+            "type": "Interface",
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "videoName",
+                    "type": {
+                        "type": "String"
+                    }
+                },
+                {
+                    "id": 1,
+                    "name": "type",
+                    "type": {
+                        "type": "String"
+                    }
+                }
+            ]
+        },
+        "PtlAddVideoName/ResAddVideoName": {
+            "type": "Interface",
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "issucess",
+                    "type": {
+                        "type": "Boolean"
                     }
                 }
             ]
@@ -274,6 +325,33 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     "name": "username",
                     "type": {
                         "type": "String"
+                    }
+                }
+            ]
+        },
+        "PtlGetVideoName/ReqGetVideoName": {
+            "type": "Interface",
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "type",
+                    "type": {
+                        "type": "String"
+                    }
+                }
+            ]
+        },
+        "PtlGetVideoName/ResGetVideoName": {
+            "type": "Interface",
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "videoNames",
+                    "type": {
+                        "type": "Array",
+                        "elementType": {
+                            "type": "String"
+                        }
                     }
                 }
             ]

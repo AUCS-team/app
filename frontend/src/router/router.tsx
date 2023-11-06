@@ -15,7 +15,7 @@ const router = createBrowserRouter([
             const username = localStorage.getItem("username")
             if (!username){
                 console.log("未登录");
-                return "123"
+                return "未登录"
             }
             return await Client.callApi("GetUser",{username})
         },
@@ -31,15 +31,13 @@ const router = createBrowserRouter([
             {
                 path:"/video/:videoName",
                 element:<Play></Play>,
-                loader:async function init({params}) {
-                    
+                loader:async function getvideoinfo({params}) {
+                        const videoName = params.videoName
                         const res = await Client.callApi("GetComment",{videoName:params.videoName as string})
                         const res2 = await Client.callApi("GetTopic",{videoName:params.videoName as string})
                         const comments = res.res?.comments
                         const topics = res2.res?.topics
-                        return {comments,topics}
-                    
-                    
+                        return {comments,topics,videoName,}   
                 }
             },
             {
