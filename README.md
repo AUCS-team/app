@@ -17,6 +17,8 @@ npm run dev
 cd frontend
 npm run dev
 ```
+# 演示
+[演示视频](https://github.com/AUCS-team/app/blob/TSRPC/docs/dome.mp4)
 
 # 其他
 详见docs目录下[README.md](https://github.com/AUCS-team/app/blob/TSRPC/docs/README.md)

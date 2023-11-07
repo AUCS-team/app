@@ -32,10 +32,10 @@ const MyUpload = () => {
       .then((res) => res.json())
       .then(() => {
         setFileList([]);
-        message.success("upload successfully.");
+        message.success("上传成功！");
       })
       .catch(() => {
-        message.error("upload failed.");
+        message.error("上传失败！");
       })
       .finally(() => {
         setUploading(false);
@@ -65,7 +65,7 @@ const MyUpload = () => {
       <Row justify={"center"} align={"middle"} className=" h-96">
         <Col>
           <Upload {...props} multiple>
-            <Button icon={<UploadOutlined />}>Select File</Button>
+            <Button icon={<UploadOutlined />}>选择文件</Button>
           </Upload>
           <Button
             type="default"
@@ -74,7 +74,7 @@ const MyUpload = () => {
             loading={uploading}
             style={{ marginTop: 16 }}
           >
-            {uploading ? "Uploading" : "Start Upload"}
+            {uploading ? "上传中" : "开始上传"}
           </Button>
         </Col>
       </Row>
