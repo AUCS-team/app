@@ -1,51 +1,40 @@
-import { Col, Divider, Row, Card, List } from "antd";
-const data = [
-  {
-    title: "Title 1",
-  },
-  {
-    title: "Title 2",
-  },
-  {
-    title: "Title 3",
-  },
-  {
-    title: "Title 4",
-  },
-  {
-    title: "Title 3",
-  },
-  {
-    title: "Title 4",
-  },
-  {
-    title: "Title 4",
-  },
-  {
-    title: "Title 3",
-  },
-];
+import { Col, Divider, Row, Card, List,Image } from "antd";
+import { useLoaderData } from "react-router";
+
 
 const Index = () => {
+  const {hotnames,highnames,costomnames} = useLoaderData() as {hotnames:string[],highnames:string[],costomnames:string[]}
+  console.log(hotnames);
+  
   return (
     <>
       <Divider orientation="left">热门视频</Divider>
       <Row className="p-3">
         <List
         className=" m-auto"
-          grid={{ gutter: 18, column: 4 }}
-          dataSource={data}
+          grid={{ gutter: 36, column: 4 }}
+          dataSource={hotnames}
           renderItem={(item) => (
             <List.Item>
-              <Card title={item.title}>Card content</Card>
+              <Card title={item}><Image src={`http://s3jpvnspe.hn-bkt.clouddn.com/poster${item}1.jpg`}></Image></Card>
             </List.Item>
           )}
         />
       </Row>
       <Row className="p-3"></Row>
       <Divider orientation="left">自选视频</Divider>
-      <Row className="p-3"></Row>
-      <Row className="p-3"></Row>
+      <Row className="p-3">
+        <List
+        className=" m-auto"
+          grid={{ gutter: 36, column: 4 }}
+          dataSource={highnames}
+          renderItem={(item) => (
+            <List.Item>
+              <Card title={item}><Image src={`http://s3jpvnspe.hn-bkt.clouddn.com/poster${item}1.jpg`}></Image></Card>
+            </List.Item>
+          )}
+        />
+      </Row>
       <Divider orientation="left">精选视频</Divider>
       <Row className="p-3">
         <Col span={4} className="flex justify-center items-center">

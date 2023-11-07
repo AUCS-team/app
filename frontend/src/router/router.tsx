@@ -22,7 +22,17 @@ const router = createBrowserRouter([
         children:[
             {
                 path:"/",
-                element:<Index></Index>
+                element:<Index></Index>,
+                loader:async function getvideonames() {
+                    const res1 = await Client.callApi("GetVideoName",{type:"hot"})
+                    const res2 = await Client.callApi("GetVideoName",{type:"high"})
+                    const res3 = await Client.callApi("GetVideoName",{type:"costom"})
+                    const hotnames = res1.res.videoNames
+                    const highnames =res2.res.videoNames
+                    const costomnames = res3.res.videoNames
+                    
+                    return {hotnames,highnames,costomnames}
+                }
             },
             {
                 path:"/login",
