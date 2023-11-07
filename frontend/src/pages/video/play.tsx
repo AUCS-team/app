@@ -30,8 +30,7 @@ const Play = () => {
   }
   document.onkeydown = onKeyDown
   const onClick = ()=>{
-setTopics([...topics,input])
-
+  setTopics([...topics,input])
   }
   const onChange = (e)=>{
     setinput(e.target.value)
@@ -41,16 +40,8 @@ setTopics([...topics,input])
   return (
     <>
       <Row className="px-3 relative" >
-        <Col span={8}><Divider orientation="left">Topic</Divider>
-            <List   dataSource={Topics} renderItem={(item,index)=>(<Card title={item}>{index}</Card>)}>
-            </List>
-        </Col>
-        <Col className=" absolute bottom-0 left-24"><Space.Compact style={{ width: '100%'}}>
-      <Input  onChange={onChange} />
-      <Button type="default" onClick={onClick}>Submit</Button>
-    </Space.Compact></Col>
-        <Col span={15} offset={1}>
-        <Divider orientation="left">Play</Divider>
+      <Col span={13} offset={1}>
+        <Divider orientation="left">{videoName}</Divider>
         <Artplayer 
                 option={{
                     url: `http://s3jpvnspe.hn-bkt.clouddn.com/1${videoName}1.m3u8`,
@@ -63,7 +54,7 @@ setTopics([...topics,input])
                           setting: true,
               
                           // Get the resolution text from level
-                    getResolution: (level) => level.height + 'P',
+                    getResolution: (level) => "原画",
               
                           // I18n
                           title: 'Quality',
@@ -96,12 +87,25 @@ setTopics([...topics,input])
                 getInstance={(art) => console.info(art)}
             />
         </Col>
+        {/* <Col span={8}><Divider orientation="left">Topic</Divider>
+            <List   dataSource={Topics} renderItem={(item,index)=>(<Card title={item}>{index}</Card>)}>
+            </List>
+        </Col>
+        <Col className=" absolute bottom-0 right-24"><Space.Compact style={{ width: '100%'}}>
+      <Input  onChange={onChange} />
+      <Button type="default" onClick={onClick}>Submit</Button>
+    </Space.Compact></Col> */}
+        <Col span={7} offset={1}>
+        <Divider orientation="left">简介</Divider>
+        <span className="ml-16">这是一个视频简介，用来测试ASCU短视频项目</span>
+        
+        </Col>
       </Row>
-      <Row className="px-3">
+      <Row className="px-3 ml-16 ">
         <Col span={8}>
-        <Divider orientation="left">Comments</Divider>
+        <Divider orientation="left">评论</Divider>
           <List
-            
+            className=" "
             dataSource={comments}
             renderItem={(item, index) => (
               <List.Item>
@@ -112,15 +116,13 @@ setTopics([...topics,input])
                       src={`https://xsgames.co/randomusers/avatar.php?g=pixel&key=${index}`}
                     />
                   }
-                  description="Ant Design, a design language for background applications, is refined by Ant UED Team"
+                  description="非常好的视频，点赞！"
                 ></List.Item.Meta>
               </List.Item>
             )}
           ></List>
         </Col>
-        <Col span={15} offset={1}>
-        <Divider orientation="left">Description</Divider>
-        </Col>
+        
       </Row>
     </>
   );
