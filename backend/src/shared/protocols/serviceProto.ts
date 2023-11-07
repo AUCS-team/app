@@ -8,6 +8,7 @@ import { ReqGetToken, ResGetToken } from './PtlGetToken';
 import { ReqGetTopic, ResGetTopic } from './PtlGetTopic';
 import { ReqGetUser, ResGetUser } from './PtlGetUser';
 import { ReqGetVideoName, ResGetVideoName } from './PtlGetVideoName';
+import { ReqGetVideoNumber, ResGetVideoNumber } from './PtlGetVideoNumber';
 
 export interface ServiceType {
     api: {
@@ -46,6 +47,10 @@ export interface ServiceType {
         "GetVideoName": {
             req: ReqGetVideoName,
             res: ResGetVideoName
+        },
+        "GetVideoNumber": {
+            req: ReqGetVideoNumber,
+            res: ResGetVideoNumber
         }
     },
     msg: {
@@ -54,7 +59,7 @@ export interface ServiceType {
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
-    "version": 6,
+    "version": 7,
     "services": [
         {
             "id": 5,
@@ -99,6 +104,11 @@ export const serviceProto: ServiceProto<ServiceType> = {
         {
             "id": 10,
             "name": "GetVideoName",
+            "type": "api"
+        },
+        {
+            "id": 11,
+            "name": "GetVideoNumber",
             "type": "api"
         }
     ],
@@ -352,6 +362,31 @@ export const serviceProto: ServiceProto<ServiceType> = {
                         "elementType": {
                             "type": "String"
                         }
+                    }
+                }
+            ]
+        },
+        "PtlGetVideoNumber/ReqGetVideoNumber": {
+            "type": "Interface",
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "type",
+                    "type": {
+                        "type": "String"
+                    },
+                    "optional": true
+                }
+            ]
+        },
+        "PtlGetVideoNumber/ResGetVideoNumber": {
+            "type": "Interface",
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "videoNumber",
+                    "type": {
+                        "type": "Number"
                     }
                 }
             ]

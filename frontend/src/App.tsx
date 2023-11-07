@@ -42,15 +42,12 @@ function App() {
       <Header className="bg-white shadow">
         <Row>
           <Col span={1}>
-          <NavLink to={"/"}>logo</NavLink>
+          <NavLink to={"/"}>AUCS</NavLink>
           </Col>
-          <Col span={10}>
-          <Menu items={items} mode="horizontal"></Menu>
+          <Col span={10}> 
           </Col>
           <Col span={4}>
-          
           <Button icon={<UploadOutlined />}><Link to={"/upload"}>Click to up load</Link></Button>
-          
           </Col>
           <Col offset={3} span={2}>
           <Button><Link to={"/login"}>{username?username:"登录"}</Link></Button>
@@ -61,7 +58,6 @@ function App() {
         </Row>
       </Header>
       <Content className="bg-white m-4 shadow rounded"><Outlet></Outlet></Content>
-      <Footer className="bg-white shadow">Footer</Footer>
     </Layout>
     </>
   )

@@ -1,24 +1,57 @@
-import { Avatar, Card, Col, Divider, List, Row } from "antd";
-import { useLoaderData } from "react-router";
+import { Avatar, Button, Card, Col, Divider, Input, List, Row ,Space} from "antd";
+import { useLoaderData,} from "react-router";
 import Artplayer from "../../components/ArtPlayer";
 import artplayerPluginHlsQuality from "artplayer-plugin-hls-quality";
+import { useState,useRef } from "react";
 
 
 
 
 const Play = () => {
-  const {comments,topics,videoName} = useLoaderData() as {comments:string[],topics:string[],videoName:string}
+  const {comments,topics,videoName,videoNumber} = useLoaderData() as {comments:string[],topics:string[],videoName:string,videoNumber:number}
+  const [Topics,setTopics] = useState(topics)
+  const [input,setinput] = useState("33")
+  const onKeyDown = (e)=>{
+    const currentNumber = Number(videoName[videoName.length-1])
+    if (e.keyCode==38) {
+      if (currentNumber === 1){
+        location.replace(`/video/${videoName.slice(0,videoName.length-1)}${videoNumber}`)
+      }else{
+        location.replace(`/video/${videoName.slice(0,videoName.length-1)}${currentNumber-1}`)
+      }
+    }
+    if (e.keyCode==40) {
+      if (currentNumber === videoNumber){
+        location.replace(`/video/${videoName.slice(0,videoName.length-1)}1`)
+      }else{
+        location.replace(`/video/${videoName.slice(0,videoName.length-1)}${currentNumber+1}`)
+      }
+    }
+  }
+  document.onkeydown = onKeyDown
+  const onClick = ()=>{
+setTopics([...topics,input])
+
+  }
+  const onChange = (e)=>{
+    setinput(e.target.value)
+    
+    
+  }
   return (
     <>
-      <Row className="px-3">
+      <Row className="px-3 relative" >
         <Col span={8}><Divider orientation="left">Topic</Divider>
-            <List   dataSource={topics} renderItem={(item,index)=>(<Card title={item}>{index}</Card>)}>
-
+            <List   dataSource={Topics} renderItem={(item,index)=>(<Card title={item}>{index}</Card>)}>
             </List>
         </Col>
+        <Col className=" absolute bottom-0 left-24"><Space.Compact style={{ width: '100%'}}>
+      <Input  onChange={onChange} />
+      <Button type="default" onClick={onClick}>Submit</Button>
+    </Space.Compact></Col>
         <Col span={15} offset={1}>
         <Divider orientation="left">Play</Divider>
-        <Artplayer
+        <Artplayer 
                 option={{
                     url: `http://s3jpvnspe.hn-bkt.clouddn.com/1${videoName}1.m3u8`,
                     plugins: [

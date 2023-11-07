@@ -45,9 +45,11 @@ const router = createBrowserRouter([
                         const videoName = params.videoName
                         const res = await Client.callApi("GetComment",{videoName:params.videoName as string})
                         const res2 = await Client.callApi("GetTopic",{videoName:params.videoName as string})
+                        const res1 = await Client.callApi("GetVideoNumber",{type:"hot"})
+                        const videoNumber = res1.res?.videoNumber
                         const comments = res.res?.comments
                         const topics = res2.res?.topics
-                        return {comments,topics,videoName,}   
+                        return {comments,topics,videoName,videoNumber}   
                 }
             },
             {
