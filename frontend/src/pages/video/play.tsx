@@ -20,7 +20,7 @@ const Play = () => {
         <Divider orientation="left">Play</Divider>
         <Artplayer
                 option={{
-                    url: 'http://s3jpvnspe.hn-bkt.clouddn.com/16月30日 (3)(3)1.m3u8',
+                    url: `http://s3jpvnspe.hn-bkt.clouddn.com/1${videoName}1.m3u8`,
                     plugins: [
                       artplayerPluginHlsQuality({
                           // Show quality in control
